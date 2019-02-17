@@ -45,10 +45,14 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             progress = moomin.getProgress();
-            if(progress<33)
-                moomin.setThumb(getResources().getDrawable(R.drawable.mublue));
-            else if(progress>66)
+            if(progress<20)
                 moomin.setThumb(getResources().getDrawable(R.drawable.mured));
+            else if(progress<40)
+                moomin.setThumb(getResources().getDrawable(R.drawable.mupink));
+            else if(progress>60 && progress<=80)
+                moomin.setThumb(getResources().getDrawable(R.drawable.musky));
+            else if(progress>80)
+                moomin.setThumb(getResources().getDrawable(R.drawable.mublue));
             else
                 moomin.setThumb(getResources().getDrawable(R.drawable.mu));
             Log.e("nothing - - ", "onStartTrackingTouch: "+progress);

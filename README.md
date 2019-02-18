@@ -1,5 +1,3 @@
-# -Android-SafetyBallTimer
-
 # 18.02.19 development meeting
 
 To do list until next week,

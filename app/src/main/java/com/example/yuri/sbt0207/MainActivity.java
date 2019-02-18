@@ -17,7 +17,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     private SeekBar moomin;
-
+    // 2월 19일 깃허브 테스트 주석
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

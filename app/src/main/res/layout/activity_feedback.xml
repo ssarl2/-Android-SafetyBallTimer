@@ -37,6 +37,14 @@
                 android:layout_height="wrap_content"
                 android:text="send"
                 android:textSize="20dp" />
+            <Button
+                android:id="@+id/Notting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Notting"
+                android:textSize="20dp" />
+
+
         </LinearLayout>
 
     </LinearLayout>

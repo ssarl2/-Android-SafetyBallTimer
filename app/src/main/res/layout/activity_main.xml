@@ -27,11 +27,13 @@ tools:context=".MainActivity">
         android:paddingTop="170dp"
         android:paddingRight="0dp">
 
-        <ImageView
-            android:id="@+id/imageView2"
+        <TextView
+            android:id="@+id/Q1"
             android:layout_width="394dp"
             android:layout_height="60dp"
-            app:srcCompat="@drawable/ok" />
+            android:paddingLeft="150dp"
+            android:text="Question1"
+            android:textSize="25sp" />
 
         <!--// 시크바 -->
 
@@ -69,15 +71,12 @@ tools:context=".MainActivity">
         android:paddingLeft="150dp"
         android:paddingTop="400dp">
 
-        <Button
-            android:id="@+id/button"
+        <TextView
+            android:id="@+id/seekText1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Feedback"
-            android:textSize="20dp"
-            style="?android:attr/borderlessButtonStyle"/>
-
-        <!--android:background="@drawable/next"-->
+            android:text="현재 값 : 50"
+            android:textSize="25sp" />
     </FrameLayout>
 
     <FrameLayout
@@ -87,7 +86,7 @@ tools:context=".MainActivity">
         android:paddingTop="0dp">
 
         <ProgressBar
-            android:id="@+id/progressBar1"
+            android:id="@+id/progressBar"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="350dp"
             android:layout_height="wrap_content"

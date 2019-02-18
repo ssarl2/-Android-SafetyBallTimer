@@ -10,7 +10,7 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/imageView4"
+            android:id="@+id/imageView"
 
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -29,52 +29,50 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/Q3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:text="Are you energetic?"
+            android:paddingLeft="60dp"
+            android:text="Question3"
             android:textSize="25sp" />
     </FrameLayout>
 
     <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="58dp"
-        android:paddingTop="300dp">
-
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <SeekBar
-            android:id="@+id/seekBar"
+            android:id="@+id/seekBarMU"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:max="10"
-            android:progress="5"
+            android:layout_gravity="center"
+            android:max="100"
+            android:progress="50"
             android:progressDrawable="@drawable/seekbar_seekbar1"
-            android:thumb="@drawable/seekbar_seekbar1_thumb" />
+            android:thumb="@drawable/mu" />
     </FrameLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingLeft="150dp"
-        android:paddingTop="400dp">
+        android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/button2"
+        <TextView
+            android:id="@+id/seekText3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/next"
-            style="?android:attr/borderlessButtonStyle"/>
+            android:layout_gravity="center"
+            android:paddingTop="100dp"
+            android:text="현재값 : 50"
+            android:textSize="25sp" />
     </FrameLayout>
-
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingLeft="350dp">
+        android:paddingLeft="350dp"
+        android:paddingTop="0dp">
 
         <ProgressBar
-            android:id="@+id/progressBar2"
+            android:id="@+id/progressBar"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="350dp"
             android:layout_height="wrap_content"
@@ -84,4 +82,6 @@
             android:progressDrawable="@drawable/progressbar_progressbar1"
             android:thumb="@drawable/tri"/>
     </FrameLayout>
+
+
 </android.support.constraint.ConstraintLayout>

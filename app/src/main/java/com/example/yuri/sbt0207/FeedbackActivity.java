@@ -16,12 +16,21 @@ public class FeedbackActivity extends AppCompatActivity {
         setContentView(R.layout.activity_feedback);
         edit = (EditText)findViewById(R.id.editText);
         String feedbackval = edit.getText().toString();
+        Button sendbtn = (Button)findViewById(R.id.sendBtn);
+        Button Noting = (Button)findViewById(R.id.Notting);
 
-        Button btn = (Button)findViewById(R.id.sendBtn);
-        btn.setOnClickListener(new View.OnClickListener() {
+        sendbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(),MainActivity.class);
+                Intent intent = new Intent(getBaseContext(),LastActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
+            }
+        });
+        Noting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(),LastActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
             }

@@ -14,4 +14,4 @@ have to make PPT about 3 slide,
 when we finished early,
 register to google play store,
 
-make app - test - fix - test - fix - ...
+make app - test - fix - test - fix - ..

@@ -28,11 +28,9 @@ public class IntroActivity extends Activity {
 
         final Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 
-        Log.d("안됌?", "됌?");
         mDatabase.getReference().child("Questions").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d("파이어베이스 확인", "여전히 안됌?");
                 q_parametersList.clear();
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                     String data = snapshot.getValue(String.class);

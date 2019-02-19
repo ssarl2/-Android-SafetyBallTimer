@@ -12,7 +12,6 @@ public class MainActivity extends AppCompatActivity {
     private TextView seekval1;
     private SeekBar moomin;
     private TextView Q1;
-    private Intent intent;
     String que1, que2, que3, que4, que5;
     int Value1;
 
@@ -24,7 +23,8 @@ public class MainActivity extends AppCompatActivity {
         moomin = (SeekBar)findViewById(R.id.seekBarMU);
         moomin.setOnSeekBarChangeListener(seekBarChangeListener); // 받아들인 값을 moomin 시크바에 적용시킴
         Q1 = (TextView)findViewById(R.id.Q1);
-        intent = getIntent();
+        Intent intent = getIntent();
+
         que1 = intent.getExtras().getString("que1");
         que2 = intent.getExtras().getString("que2");
         que3 = intent.getExtras().getString("que3");
@@ -72,12 +72,12 @@ public class MainActivity extends AppCompatActivity {
         // 프로그레스바를 떼고 작동하는 함수
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
-            Intent intent = new Intent(getBaseContext(), TwoActivity.class);
-            intent.putExtra("que2", que2);
-            intent.putExtra("que3", que3);
-            intent.putExtra("que4", que4);
-            intent.putExtra("que5", que5);
-            startActivity(intent);
+            Intent next_intent = new Intent(getBaseContext(), TwoActivity.class);
+            next_intent.putExtra("que2", que2);
+            next_intent.putExtra("que3", que3);
+            next_intent.putExtra("que4", que4);
+            next_intent.putExtra("que5", que5);
+            startActivity(next_intent);
             overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
         }
     };

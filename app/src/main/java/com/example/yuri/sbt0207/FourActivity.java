@@ -11,7 +11,6 @@ public class FourActivity extends Activity {
     private TextView seekval4;
     private SeekBar moomin;
     private TextView Q4;
-    private Intent intent;
     String que4, que5;
     int Value4;
     // 2월 19일 깃허브 테스트 주석
@@ -19,9 +18,11 @@ public class FourActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_four);
+        Q4 = (TextView)findViewById(R.id.Q4);
         seekval4= (TextView)findViewById(R.id.seekText4);
         moomin = (SeekBar)findViewById(R.id.seekBarMU);
         moomin.setOnSeekBarChangeListener(seekBarChangeListener); // 받아들이 값을 moomin 시크바에 적용시킴
+        Intent intent = getIntent();
 
         que4 = intent.getExtras().getString("que4");
         que5 = intent.getExtras().getString("que5");
@@ -67,9 +68,9 @@ public class FourActivity extends Activity {
         // 프로그레스바를 떼고 작동하는 함수
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
-            Intent intent = new Intent(getBaseContext(), FiveActivity.class);
-            intent.putExtra("que5", que5);
-            startActivity(intent);
+            Intent next_intent = new Intent(getBaseContext(), FiveActivity.class);
+            next_intent.putExtra("que5", que5);
+            startActivity(next_intent);
             overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
         }
     };

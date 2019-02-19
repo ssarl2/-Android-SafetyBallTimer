@@ -11,7 +11,6 @@ public class ThreeActivity extends Activity {
     private TextView seekval3;
     private SeekBar moomin;
     private TextView Q3;
-    private Intent intent;
     String que3, que4, que5;
     int Value3;
     // 2월 19일 깃허브 테스트 주석
@@ -19,9 +18,11 @@ public class ThreeActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_three);
+        Q3 = (TextView)findViewById(R.id.Q3);
         seekval3= (TextView)findViewById(R.id.seekText3);
         moomin = (SeekBar)findViewById(R.id.seekBarMU);
         moomin.setOnSeekBarChangeListener(seekBarChangeListener); // 받아들이 값을 moomin 시크바에 적용시킴
+        Intent intent = getIntent();
 
         que3 = intent.getExtras().getString("que3");
         que4 = intent.getExtras().getString("que4");
@@ -68,10 +69,10 @@ public class ThreeActivity extends Activity {
         // 프로그레스바를 떼고 작동하는 함수
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
-            Intent intent = new Intent(getBaseContext(), FourActivity.class);
-            intent.putExtra("que4", que4);
-            intent.putExtra("que5", que5);
-            startActivity(intent);
+            Intent next_intent = new Intent(getBaseContext(), FourActivity.class);
+            next_intent.putExtra("que4", que4);
+            next_intent.putExtra("que5", que5);
+            startActivity(next_intent);
             overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
         }
     };

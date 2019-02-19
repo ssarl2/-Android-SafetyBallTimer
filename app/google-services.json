@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "63914614960",
+    "firebase_url": "https://safetyballtimer.firebaseio.com",
+    "project_id": "safetyballtimer",
+    "storage_bucket": "safetyballtimer.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:63914614960:android:654169df6b0fe7f4",
+        "android_client_info": {
+          "package_name": "com.example.yuri.sbt0207"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "63914614960-mo880sakc8561gacbgtg970bht8udbru.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMVqqJJxMNMNMyFRk4pLd4T6BVuiEoKrI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

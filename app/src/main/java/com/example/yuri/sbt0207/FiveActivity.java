@@ -11,7 +11,6 @@ public class FiveActivity extends Activity {
     private TextView seekval5;
     private SeekBar moomin;
     private TextView Q5;
-    private Intent intent;
     String que5;
     int Value5;
 
@@ -20,9 +19,11 @@ public class FiveActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_five);
+        Q5 = (TextView)findViewById(R.id.Q5);
         seekval5 = (TextView) findViewById(R.id.seekText5);
         moomin = (SeekBar) findViewById(R.id.seekBarMU);
         moomin.setOnSeekBarChangeListener(seekBarChangeListener); // 받아들이 값을 moomin 시크바에 적용시킴
+        Intent intent = getIntent();
 
         que5 = intent.getExtras().getString("que5");
 

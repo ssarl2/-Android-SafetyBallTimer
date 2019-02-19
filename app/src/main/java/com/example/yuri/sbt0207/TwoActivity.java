@@ -10,7 +10,11 @@ import android.widget.TextView;
 public class TwoActivity extends Activity {
     private TextView seekval2;
     private SeekBar moomin;
+    private TextView Q2;
+    private Intent intent;
+    String que2, que3, que4, que5;
     int Value2;
+
     // 2월 19일 깃허브 테스트 주석
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +24,12 @@ public class TwoActivity extends Activity {
         moomin = (SeekBar)findViewById(R.id.seekBarMU);
         moomin.setOnSeekBarChangeListener(seekBarChangeListener); // 받아들이 값을 moomin 시크바에 적용시킴
 
+        que2 = intent.getExtras().getString("que2");
+        que3 = intent.getExtras().getString("que3");
+        que4 = intent.getExtras().getString("que4");
+        que5 = intent.getExtras().getString("que5");
+
+        Q2.setText(que2);
     }
 
     // 시크바의 체인지리스너 매개함수? 생성..
@@ -61,6 +71,9 @@ public class TwoActivity extends Activity {
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
             Intent intent = new Intent(getBaseContext(), ThreeActivity.class);
+            intent.putExtra("que3", que3);
+            intent.putExtra("que4", que4);
+            intent.putExtra("que5", que5);
             startActivity(intent);
             overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
         }

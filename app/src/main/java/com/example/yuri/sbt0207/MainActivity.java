@@ -11,6 +11,9 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
     private TextView seekval1;
     private SeekBar moomin;
+    private TextView Q1;
+    private Intent intent;
+    String que1, que2, que3, que4, que5;
     int Value1;
 
     @Override
@@ -20,7 +23,15 @@ public class MainActivity extends AppCompatActivity {
         seekval1= (TextView)findViewById(R.id.seekText1);
         moomin = (SeekBar)findViewById(R.id.seekBarMU);
         moomin.setOnSeekBarChangeListener(seekBarChangeListener); // 받아들인 값을 moomin 시크바에 적용시킴
+        Q1 = (TextView)findViewById(R.id.Q1);
+        intent = getIntent();
+        que1 = intent.getExtras().getString("que1");
+        que2 = intent.getExtras().getString("que2");
+        que3 = intent.getExtras().getString("que3");
+        que4 = intent.getExtras().getString("que4");
+        que5 = intent.getExtras().getString("que5");
 
+        Q1.setText(que1);
     }
 
     // 시크바의 체인지리스너 매개함수? 생성..
@@ -62,6 +73,10 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
             Intent intent = new Intent(getBaseContext(), TwoActivity.class);
+            intent.putExtra("que2", que2);
+            intent.putExtra("que3", que3);
+            intent.putExtra("que4", que4);
+            intent.putExtra("que5", que5);
             startActivity(intent);
             overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
         }

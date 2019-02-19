@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.firebase.database.FirebaseDatabase;
+
 public class FeedbackActivity extends AppCompatActivity {
     EditText edit;
     @Override
@@ -15,14 +17,17 @@ public class FeedbackActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feedback);
         edit = (EditText)findViewById(R.id.editText);
-        String feedbackval = edit.getText().toString();
+        final String feedbackval = edit.getText().toString();
         Button sendbtn = (Button)findViewById(R.id.sendBtn);
         Button Noting = (Button)findViewById(R.id.Notting);
+
+        final FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
 
         sendbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getBaseContext(),LastActivity.class);
+                mDatabase.getReference().child("Reply").push().setValue(feedbackval);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
             }

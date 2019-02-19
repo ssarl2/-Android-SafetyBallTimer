@@ -10,6 +10,9 @@ import android.widget.TextView;
 public class FiveActivity extends Activity {
     private TextView seekval5;
     private SeekBar moomin;
+    private TextView Q5;
+    private Intent intent;
+    String que5;
     int Value5;
 
     // 2월 19일 깃허브 테스트 주석
@@ -21,6 +24,9 @@ public class FiveActivity extends Activity {
         moomin = (SeekBar) findViewById(R.id.seekBarMU);
         moomin.setOnSeekBarChangeListener(seekBarChangeListener); // 받아들이 값을 moomin 시크바에 적용시킴
 
+        que5 = intent.getExtras().getString("que5");
+
+        Q5.setText(que5);
     }
 
     // 시크바의 체인지리스너 매개함수? 생성..

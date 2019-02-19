@@ -7,7 +7,7 @@ import android.util.Log;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-public class Activity3 extends Activity {
+public class ThreeActivity extends Activity {
     private TextView seekval3;
     private SeekBar moomin;
     int Value3;
@@ -15,7 +15,7 @@ public class Activity3 extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity3);
+        setContentView(R.layout.activity_three);
         seekval3= (TextView)findViewById(R.id.seekText3);
         moomin = (SeekBar)findViewById(R.id.seekBarMU);
         moomin.setOnSeekBarChangeListener(seekBarChangeListener); // 받아들이 값을 moomin 시크바에 적용시킴
@@ -40,8 +40,14 @@ public class Activity3 extends Activity {
             else
                 moomin.setThumb(getResources().getDrawable(R.drawable.mu));
             Log.e("nothing - - ", "onStartTrackingTouch: "+progress);
-            seekval3.setText("현재값 : "+ progress);
+            seekval3.setText(""+progress);
             Value3=progress;
+
+            // view가 시크바의 thumb 따라다니게 만드는 함수
+            int padding= moomin.getPaddingLeft() + moomin.getPaddingRight();
+            int sPos = moomin.getLeft() + moomin.getPaddingLeft();
+            int xPos = (moomin.getWidth()-padding) * moomin.getProgress() / moomin.getMax() + sPos - (seekval3.getWidth()/2);
+            seekval3.setX(xPos);
 
         }
 
@@ -54,7 +60,7 @@ public class Activity3 extends Activity {
         // 프로그레스바를 떼고 작동하는 함수
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
-            Intent intent = new Intent(getBaseContext(),Activity4.class);
+            Intent intent = new Intent(getBaseContext(), FourActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
         }

@@ -7,7 +7,7 @@ import android.util.Log;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-public class Activity5 extends Activity {
+public class FiveActivity extends Activity {
     private TextView seekval5;
     private SeekBar moomin;
     int Value5;
@@ -16,7 +16,7 @@ public class Activity5 extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity5);
+        setContentView(R.layout.activity_five);
         seekval5 = (TextView) findViewById(R.id.seekText5);
         moomin = (SeekBar) findViewById(R.id.seekBarMU);
         moomin.setOnSeekBarChangeListener(seekBarChangeListener); // 받아들이 값을 moomin 시크바에 적용시킴
@@ -41,8 +41,14 @@ public class Activity5 extends Activity {
             else
                 moomin.setThumb(getResources().getDrawable(R.drawable.mu));
             Log.e("nothing - - ", "onStartTrackingTouch: " + progress);
-            seekval5.setText("현재값 : " + progress);
+            seekval5.setText(""+progress);
             Value5=progress;
+
+            // view가 시크바의 thumb 따라다니게 만드는 함수
+            int padding= moomin.getPaddingLeft() + moomin.getPaddingRight();
+            int sPos = moomin.getLeft() + moomin.getPaddingLeft();
+            int xPos = (moomin.getWidth()-padding) * moomin.getProgress() / moomin.getMax() + sPos - (seekval5.getWidth()/2);
+            seekval5.setX(xPos);
 
         }
 

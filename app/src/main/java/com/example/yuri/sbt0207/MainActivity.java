@@ -3,31 +3,23 @@ package com.example.yuri.sbt0207;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.content.Intent;
-import android.widget.ImageButton;
-import android.app.Activity;
-import android.view.View.OnClickListener;
-import java.net.Authenticator;
 
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private TextView seekval1;
     private SeekBar moomin;
     int Value1;
-    // 2월 19일 깃허브 테스트 주석
-    // 2월 19일 깃허브 테스트 주석 -원학- 잘되는듯
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         seekval1= (TextView)findViewById(R.id.seekText1);
         moomin = (SeekBar)findViewById(R.id.seekBarMU);
-        moomin.setOnSeekBarChangeListener(seekBarChangeListener); // 받아들이 값을 moomin 시크바에 적용시킴
+        moomin.setOnSeekBarChangeListener(seekBarChangeListener); // 받아들인 값을 moomin 시크바에 적용시킴
 
     }
 
@@ -49,8 +41,14 @@ public class MainActivity extends AppCompatActivity {
             else
                 moomin.setThumb(getResources().getDrawable(R.drawable.mu));
             Log.e("nothing - - ", "onStartTrackingTouch: "+progress);
-            seekval1.setText("현재값 : "+ progress);
+            seekval1.setText(""+progress);
             Value1=progress;
+
+            // view가 시크바의 thumb 따라다니게 만드는 함수
+            int padding= moomin.getPaddingLeft() + moomin.getPaddingRight();
+            int sPos = moomin.getLeft() + moomin.getPaddingLeft();
+            int xPos = (moomin.getWidth()-padding) * moomin.getProgress() / moomin.getMax() + sPos - (seekval1.getWidth()/2);
+            seekval1.setX(xPos);
 
         }
 
@@ -63,11 +61,10 @@ public class MainActivity extends AppCompatActivity {
         // 프로그레스바를 떼고 작동하는 함수
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
-            Intent intent = new Intent(getBaseContext(),Activity2.class);
+            Intent intent = new Intent(getBaseContext(), TwoActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
         }
     };
-
 
 }

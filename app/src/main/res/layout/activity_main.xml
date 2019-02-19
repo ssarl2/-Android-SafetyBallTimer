@@ -1,100 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-tools:context=".MainActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/back"
+        android:gravity="center|top"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
 
-        <ImageView
-            android:id="@+id/imageView1"
-
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:srcCompat="@drawable/back"
-            android:background="@drawable/back"/>
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="180dp"
+            android:gravity="center"
+            android:orientation="horizontal">
 
+            <TextView
+                android:id="@+id/Q1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Question1"
+                android:textSize="25dp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:gravity="center">
 
-    </FrameLayout>
+            <TextView
+                android:id="@+id/seekText1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="50"
+                android:textSize="25dp" />
+        </LinearLayout>
+        <!--// 시크바 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="170dp"
-        android:paddingRight="0dp">
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/Q1"
-            android:layout_width="394dp"
-            android:layout_height="60dp"
-            android:paddingLeft="150dp"
-            android:text="Question1"
-            android:textSize="25sp" />
+                <SeekBar
+                    android:id="@+id/seekBarMU"
+                    android:layout_width="288dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:max="100"
+                    android:progress="50"
+                    android:progressDrawable="@drawable/seekbar_seekbar1"
+                    android:thumb="@drawable/mu" />
 
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="285dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingTop="30dp"
+                    app:srcCompat="@drawable/fine" />
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="350dp"
+                    android:layout_height="wrap_content"
+                    android:progress="25"
+                    android:layout_gravity="right|center"
+                    android:progressDrawable="@drawable/progressbar_progressbar1"
+                    android:rotation="-270"
+                    android:thumb="@drawable/tri" />
+            </FrameLayout>
+        </LinearLayout>
         <!--// 시크바 -->
 
-    </FrameLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
-
-        <SeekBar
-            android:id="@+id/seekBarMU"
-            android:layout_width="288dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:max="100"
-            android:progress="50"
-            android:progressDrawable="@drawable/seekbar_seekbar1"
-            android:thumb="@drawable/mu" />
-
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="285dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:paddingTop="30dp"
-            app:srcCompat="@drawable/fine" />
-
-        <!--// 시크바 -->
-    </FrameLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingLeft="150dp"
-        android:paddingTop="400dp">
-
-        <TextView
-            android:id="@+id/seekText1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="현재 값 : 50"
-            android:textSize="25sp" />
-    </FrameLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingLeft="350dp"
-        android:paddingTop="0dp">
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="350dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:progress="25"
-            android:rotation="-270"
-            android:progressDrawable="@drawable/progressbar_progressbar1"
-            android:thumb="@drawable/tri"/>
-    </FrameLayout>
-
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>

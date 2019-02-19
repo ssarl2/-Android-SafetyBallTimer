@@ -6,11 +6,11 @@ import android.os.Bundle;
 import android.os.Handler;
 
 
-public class intro extends Activity {
+public class IntroActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.intro); //xml , java 소스 연결
+        setContentView(R.layout.intro_activity); //xml , java 소스 연결
         Handler handler = new Handler();
 
         handler.postDelayed(new Runnable(){
@@ -20,7 +20,7 @@ public class intro extends Activity {
                 startActivity(intent); //다음화면으로 넘어감
                 finish();
             }
-        },3000); //5초 뒤에 Runner객체 실행하도록 함
+        },2000); //2초 뒤에 Runner객체 실행하도록 함
     }
 
     @Override

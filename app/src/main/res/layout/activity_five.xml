@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="60dp"
             android:text="Question5"
-            android:textSize="25sp" />
+            android:textSize="25dp" />
     </FrameLayout>
 
     <FrameLayout
@@ -62,8 +62,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:paddingTop="100dp"
-            android:text="현재값 : 50"
-            android:textSize="25sp" />
+            android:text="50"
+            android:textSize="25dp" />
     </FrameLayout>
     <FrameLayout
         android:layout_width="match_parent"

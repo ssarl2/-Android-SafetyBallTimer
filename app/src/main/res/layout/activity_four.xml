@@ -29,12 +29,12 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
-            android:id="@+id/Q3"
+            android:id="@+id/Q4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="60dp"
-            android:text="Question3"
-            android:textSize="25sp" />
+            android:text="Question4"
+            android:textSize="25dp" />
     </FrameLayout>
 
     <FrameLayout
@@ -57,13 +57,13 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/seekText3"
+            android:id="@+id/seekText4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:paddingTop="100dp"
-            android:text="현재값 : 50"
-            android:textSize="25sp" />
+            android:text="50"
+            android:textSize="25dp" />
     </FrameLayout>
     <FrameLayout
         android:layout_width="match_parent"
@@ -77,7 +77,7 @@
             android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:progress="50"
+            android:progress="75"
             android:rotation="-270"
             android:progressDrawable="@drawable/progressbar_progressbar1"
             android:thumb="@drawable/tri"/>

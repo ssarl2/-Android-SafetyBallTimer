@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private SeekBar moomin;
     int Value1;
     // 2월 19일 깃허브 테스트 주석
+    // 2월 19일 깃허브 테스트 주석 -원학- 잘되는듯
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -40,7 +40,14 @@ public class IntroActivity extends Activity {
                 int position[] = new int[5];
                 for(int i=0; i<5; i++){
                     position[i] = rnd.nextInt(5)+1;
-                    Log.d("Check data", q_parametersList.get(position[i]));
+                    for(int j=0; j<i; j++){
+                        if(position[i] == position[j]){
+                            i--;
+                        }
+                    }
+                }
+                for(int k=0; k<5; k++){
+                    Log.d("Check data", q_parametersList.get(position[k]));
                 }
                 intent.putExtra("que1", q_parametersList.get(position[0]));
                 intent.putExtra("que2", q_parametersList.get(position[1]));

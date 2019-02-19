@@ -25,28 +25,18 @@
 
             <TextView
                 android:id="@+id/Q1"
-                android:layout_width="wrap_content"
+                android:layout_width="280dp"
                 android:layout_height="wrap_content"
+                android:textAlignment="center"
                 android:text="Question1"
                 android:textSize="25dp" />
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:gravity="center">
 
-            <TextView
-                android:id="@+id/seekText1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="50"
-                android:textSize="25dp" />
-        </LinearLayout>
         <!--// 시크바 -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp">
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -83,6 +73,19 @@
             </FrameLayout>
         </LinearLayout>
         <!--// 시크바 -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/seekText1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="50"
+                android:textSize="25dp" />
+        </LinearLayout>
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

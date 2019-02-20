@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -69,20 +70,31 @@
                     android:paddingTop="30dp"
                     app:srcCompat="@drawable/fine" />
 
-                <ProgressBar
-                    android:id="@+id/progressBar"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="350dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right|center"
-                    android:progress="25"
-                    android:progressDrawable="@drawable/progressbar_progressbar1"
-                    android:rotation="-270"
-                    android:thumb="@drawable/tri" />
             </FrameLayout>
         </LinearLayout>
+
         <!--// 시크바 -->
 
 
     </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center"
+            android:paddingBottom="300dp"
+            android:progress="66"
+            android:progressDrawable="@drawable/progressbar_progressbar1"
+            android:rotation="-270"
+            android:thumb="@drawable/tri"
+            tools:layout_editor_absoluteX="61dp"
+            tools:layout_editor_absoluteY="379dp" />
+    </FrameLayout>
+
 </android.support.constraint.ConstraintLayout>

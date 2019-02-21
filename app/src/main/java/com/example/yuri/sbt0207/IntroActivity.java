@@ -17,6 +17,8 @@ import java.util.Random;
 
 
 public class IntroActivity extends Activity {
+    int count = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +37,9 @@ public class IntroActivity extends Activity {
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                     String data = snapshot.getValue(String.class);
                     q_parametersList.add(data);
+                    count++;
                 }
+                Log.d("Count", String.valueOf(count));
                 Random rnd = new Random();
                 int position[] = new int[5];
                 for(int i=0; i<5; i++){
@@ -54,6 +58,8 @@ public class IntroActivity extends Activity {
                 intent.putExtra("que3", q_parametersList.get(position[2]));
                 intent.putExtra("que4", q_parametersList.get(position[3]));
                 intent.putExtra("que5", q_parametersList.get(position[4]));
+
+
             }
 
             @Override
@@ -69,6 +75,9 @@ public class IntroActivity extends Activity {
                 finish();
             }
         },2000); //2초 뒤에 Runner객체 실행하도록 함
+
+
+
     }
 
     @Override

@@ -9,16 +9,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/back"
-        android:gravity="center|top"
+        android:gravity="center"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_gravity="center"
-            android:layout_marginTop="160dp"
+            android:layout_weight="1"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingTop="100dp">
 
             <TextView
                 android:id="@+id/Q3"
@@ -29,34 +30,30 @@
                 android:textSize="25dp" />
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="70dp"
-            android:gravity="center">
-
-            <TextView
-                android:id="@+id/seekText3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="50"
-                android:textSize="25dp" />
-        </LinearLayout>
-
         <!--// 시크바 -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+                <TextView
+                    android:id="@+id/seekText3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|top"
+                    android:text="50"
+                    android:textSize="25dp" />
+
                 <SeekBar
                     android:id="@+id/seekBarMU"
                     android:layout_width="288dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
+                    android:layout_gravity="center|top"
+                    android:layout_marginTop="30dp"
                     android:max="100"
                     android:progress="50"
                     android:progressDrawable="@drawable/seekbar_seekbar1"
@@ -66,8 +63,8 @@
                     android:id="@+id/imageView3"
                     android:layout_width="285dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:paddingTop="30dp"
+                    android:layout_gravity="center|top"
+                    android:paddingTop="50dp"
                     app:srcCompat="@drawable/fine" />
 
             </FrameLayout>
@@ -89,7 +86,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right|center"
             android:paddingBottom="300dp"
-            android:progress="66"
+            android:progress="100"
             android:progressDrawable="@drawable/progressbar_progressbar1"
             android:rotation="-270"
             android:thumb="@drawable/tri"

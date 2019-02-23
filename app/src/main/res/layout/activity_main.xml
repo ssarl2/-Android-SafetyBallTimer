@@ -86,7 +86,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right|center"
             android:paddingBottom="300dp"
-            android:progress="100"
+            android:progress="20"
             android:progressDrawable="@drawable/progressbar_progressbar1"
             android:rotation="-270"
             android:thumb="@drawable/tri"

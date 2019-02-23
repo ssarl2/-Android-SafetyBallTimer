@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView Q1;
     String que1, que2, que3, que4, que5;
     int Value1;
+    int answer1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
             int sPos = moomin.getLeft() + moomin.getPaddingLeft();
             int xPos = (moomin.getWidth()-padding) * moomin.getProgress() / moomin.getMax() + sPos - (seekval1.getWidth()/2);
             seekval1.setX(xPos);
+            answer1 = progress;
 
         }
 
@@ -77,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
             next_intent.putExtra("que3", que3);
             next_intent.putExtra("que4", que4);
             next_intent.putExtra("que5", que5);
+            next_intent.putExtra("ans1", answer1);
             startActivity(next_intent);
             overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
         }

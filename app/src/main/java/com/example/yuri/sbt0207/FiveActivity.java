@@ -7,12 +7,16 @@ import android.util.Log;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.google.firebase.database.FirebaseDatabase;
+
 public class FiveActivity extends Activity {
     private TextView seekval5;
     private SeekBar moomin;
     private TextView Q5;
     String que5;
     int Value5;
+    int answer1, answer2, answer3, answer4, answer5;
+    FirebaseDatabase mDatabase;
 
     // 2월 19일 깃허브 테스트 주석
     @Override
@@ -23,9 +27,15 @@ public class FiveActivity extends Activity {
         seekval5 = (TextView) findViewById(R.id.seekText5);
         moomin = (SeekBar) findViewById(R.id.seekBarMU);
         moomin.setOnSeekBarChangeListener(seekBarChangeListener); // 받아들이 값을 moomin 시크바에 적용시킴
+
+        mDatabase = FirebaseDatabase.getInstance();
         Intent intent = getIntent();
 
         que5 = intent.getExtras().getString("que5");
+        answer1 = intent.getExtras().getInt("ans1");
+        answer2 = intent.getExtras().getInt("ans2");
+        answer3 = intent.getExtras().getInt("ans3");
+        answer4 = intent.getExtras().getInt("ans4");
 
         Q5.setText(que5);
     }
@@ -56,7 +66,7 @@ public class FiveActivity extends Activity {
             int sPos = moomin.getLeft() + moomin.getPaddingLeft();
             int xPos = (moomin.getWidth()-padding) * moomin.getProgress() / moomin.getMax() + sPos - (seekval5.getWidth()/2);
             seekval5.setX(xPos);
-
+            answer5 = progress;
         }
 
         // 프로그레스바를 눌릴 때 작동하는 함수
@@ -68,6 +78,14 @@ public class FiveActivity extends Activity {
         // 프로그레스바를 떼고 작동하는 함수
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
+            Answer_class answer_class = new Answer_class();
+            answer_class.answer1 = answer1;
+            answer_class.answer2 = answer2;
+            answer_class.answer3 = answer3;
+            answer_class.answer4 = answer4;
+            answer_class.answer5 = answer5;
+            mDatabase.getReference().child("Answer").push().setValue(answer_class);
+
             Intent intent = new Intent(getBaseContext(),FeedbackActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.slide_up, R.anim.slide_down);

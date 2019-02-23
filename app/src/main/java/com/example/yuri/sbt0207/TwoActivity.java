@@ -13,6 +13,7 @@ public class TwoActivity extends Activity {
     private TextView Q2;
     String que2, que3, que4, que5;
     int Value2;
+    int answer1, answer2;
 
     // 2월 19일 깃허브 테스트 주석
     @Override
@@ -29,6 +30,8 @@ public class TwoActivity extends Activity {
         que3 = intent.getExtras().getString("que3");
         que4 = intent.getExtras().getString("que4");
         que5 = intent.getExtras().getString("que5");
+
+        answer1 = intent.getExtras().getInt("ans1");
 
         Q2.setText(que2);
     }
@@ -59,7 +62,7 @@ public class TwoActivity extends Activity {
             int sPos = moomin.getLeft() + moomin.getPaddingLeft();
             int xPos = (moomin.getWidth()-padding) * moomin.getProgress() / moomin.getMax() + sPos - (seekval2.getWidth()/2);
             seekval2.setX(xPos);
-
+            answer2 = progress;
         }
 
         // 프로그레스바를 눌릴 때 작동하는 함수
@@ -75,6 +78,8 @@ public class TwoActivity extends Activity {
             next_intent.putExtra("que3", que3);
             next_intent.putExtra("que4", que4);
             next_intent.putExtra("que5", que5);
+            next_intent.putExtra("ans1", answer1);
+            next_intent.putExtra("ans2", answer2);
             startActivity(next_intent);
             overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
         }

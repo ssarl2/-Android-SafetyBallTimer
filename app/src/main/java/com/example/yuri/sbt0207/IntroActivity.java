@@ -17,7 +17,8 @@ import java.util.Random;
 
 
 public class IntroActivity extends Activity {
-    int count = 0;
+    long count = 0;
+    long delayTime = 2000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +37,9 @@ public class IntroActivity extends Activity {
                 q_parametersList.clear();
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                     String data = snapshot.getValue(String.class);
+                    count = count + 1000;
                     q_parametersList.add(data);
-                    count++;
                 }
-                Log.d("Count", String.valueOf(count));
                 Random rnd = new Random();
                 int position[] = new int[5];
                 for(int i=0; i<5; i++){
@@ -52,13 +52,13 @@ public class IntroActivity extends Activity {
                 }
                 for(int k=0; k<5; k++){
                     Log.d("Check data", q_parametersList.get(position[k]));
+                    Log.d("카운트", String.valueOf(count));
                 }
                 intent.putExtra("que1", q_parametersList.get(position[0]));
                 intent.putExtra("que2", q_parametersList.get(position[1]));
                 intent.putExtra("que3", q_parametersList.get(position[2]));
                 intent.putExtra("que4", q_parametersList.get(position[3]));
                 intent.putExtra("que5", q_parametersList.get(position[4]));
-
 
             }
 
@@ -67,14 +67,14 @@ public class IntroActivity extends Activity {
 
             }
         });
+            handler.postDelayed(new Runnable(){
+                @Override
+                public void run() {
+                    startActivity(intent); //다음화면으로 넘어감
+                    finish();
+                }
 
-        handler.postDelayed(new Runnable(){
-            @Override
-            public void run() {
-                startActivity(intent); //다음화면으로 넘어감
-                finish();
-            }
-        },2000); //2초 뒤에 Runner객체 실행하도록 함
+            },delayTime+count); //2초 뒤에 Runner객체 실행하도록 함
 
 
 

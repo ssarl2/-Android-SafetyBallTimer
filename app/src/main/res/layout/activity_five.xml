@@ -62,10 +62,10 @@
                 <ImageView
                     android:id="@+id/imageView3"
                     android:layout_width="285dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="10dp"
                     android:layout_gravity="center|top"
-                    android:paddingTop="50dp"
-                    app:srcCompat="@drawable/fine" />
+                    android:layout_marginTop="88dp"
+                    android:background="@drawable/fine" />
 
             </FrameLayout>
         </LinearLayout>

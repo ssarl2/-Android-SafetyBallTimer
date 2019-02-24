@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -18,6 +19,9 @@ public class FeedbackActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feedback);
+
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
         edit = (EditText)findViewById(R.id.editText);
         Button sendbtn = (Button)findViewById(R.id.sendBtn);
         Button Noting = (Button)findViewById(R.id.Notting);

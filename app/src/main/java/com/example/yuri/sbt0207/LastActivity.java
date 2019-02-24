@@ -36,7 +36,7 @@ public class LastActivity extends AppCompatActivity {
                 Random rnd = new Random();
                 int position[] = new int[5];
                 for(int i=0; i<5; i++){
-                    position[i] = rnd.nextInt(5)+1;
+                    position[i] = rnd.nextInt(20)+1;
                     for(int j=0; j<i; j++){
                         if(position[i] == position[j]){
                             i--;

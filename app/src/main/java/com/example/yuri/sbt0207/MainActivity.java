@@ -62,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
             int xPos = (moomin.getWidth()-padding) * moomin.getProgress() / moomin.getMax() + sPos - (seekval1.getWidth()/2);
             seekval1.setX(xPos);
             answer1 = progress;
-
         }
 
         // 프로그레스바를 눌릴 때 작동하는 함수

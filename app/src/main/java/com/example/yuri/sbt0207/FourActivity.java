@@ -3,6 +3,7 @@ package com.example.yuri.sbt0207;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -72,14 +73,21 @@ public class FourActivity extends Activity {
         // 프로그레스바를 떼고 작동하는 함수
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
-            Intent next_intent = new Intent(getBaseContext(), FiveActivity.class);
-            next_intent.putExtra("que5", que5);
-            next_intent.putExtra("ans1", answer1);
-            next_intent.putExtra("ans2", answer2);
-            next_intent.putExtra("ans3", answer3);
-            next_intent.putExtra("ans4", answer4);
-            startActivity(next_intent);
-            overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
+            Handler delayHandler = new Handler();
+            delayHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent next_intent = new Intent(getBaseContext(), FiveActivity.class);
+                    next_intent.putExtra("que5", que5);
+                    next_intent.putExtra("ans1", answer1);
+                    next_intent.putExtra("ans2", answer2);
+                    next_intent.putExtra("ans3", answer3);
+                    next_intent.putExtra("ans4", answer4);
+                    startActivity(next_intent);
+                    overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
+                }
+            }, 3000);
+
         }
     };
 }

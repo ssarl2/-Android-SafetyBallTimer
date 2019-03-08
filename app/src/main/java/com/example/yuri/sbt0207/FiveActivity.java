@@ -3,6 +3,7 @@ package com.example.yuri.sbt0207;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -78,17 +79,24 @@ public class FiveActivity extends Activity {
         // 프로그레스바를 떼고 작동하는 함수
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
-            Answer_class answer_class = new Answer_class();
-            answer_class.answer1 = answer1;
-            answer_class.answer2 = answer2;
-            answer_class.answer3 = answer3;
-            answer_class.answer4 = answer4;
-            answer_class.answer5 = answer5;
-            mDatabase.getReference().child("Answer").push().setValue(answer_class);
+            Handler delayHandler = new Handler();
+            delayHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Answer_class answer_class = new Answer_class();
+                    answer_class.answer1 = answer1;
+                    answer_class.answer2 = answer2;
+                    answer_class.answer3 = answer3;
+                    answer_class.answer4 = answer4;
+                    answer_class.answer5 = answer5;
+                    mDatabase.getReference().child("Answer").push().setValue(answer_class);
 
-            Intent intent = new Intent(getBaseContext(),FeedbackActivity.class);
-            startActivity(intent);
-            overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
+                    Intent intent = new Intent(getBaseContext(),FeedbackActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
+                }
+            }, 3000);
+
         }
     };
 }

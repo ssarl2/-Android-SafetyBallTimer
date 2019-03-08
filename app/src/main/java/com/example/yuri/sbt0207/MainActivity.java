@@ -1,5 +1,6 @@
 package com.example.yuri.sbt0207;
 
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -73,14 +74,22 @@ public class MainActivity extends AppCompatActivity {
         // 프로그레스바를 떼고 작동하는 함수
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
-            Intent next_intent = new Intent(getBaseContext(), TwoActivity.class);
-            next_intent.putExtra("que2", que2);
-            next_intent.putExtra("que3", que3);
-            next_intent.putExtra("que4", que4);
-            next_intent.putExtra("que5", que5);
-            next_intent.putExtra("ans1", answer1);
-            startActivity(next_intent);
-            overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
+
+            Handler delayHandler = new Handler();
+            delayHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent next_intent = new Intent(getBaseContext(), TwoActivity.class);
+                    next_intent.putExtra("que2", que2);
+                    next_intent.putExtra("que3", que3);
+                    next_intent.putExtra("que4", que4);
+                    next_intent.putExtra("que5", que5);
+                    next_intent.putExtra("ans1", answer1);
+                    startActivity(next_intent);
+                    overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
+                }
+            }, 3000);
+
         }
     };
 

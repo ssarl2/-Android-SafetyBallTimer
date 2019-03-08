@@ -13,6 +13,8 @@ Add function of average of employees answer.<br>
 
 # 18.02.19 development meeting
 
+---------------------------------------------------------------------------------------
+
 ### To do list until next week<br>
 
 we will combine all function.<br>

@@ -1,6 +1,6 @@
-## 18.02.19 development meeting
+# 18.02.19 development meeting
 
-# To do list until next week<br>
+### To do list until next week<br>
 
 we will combine all function.<br>
 we will add 20 questions on firebase.<br>
@@ -17,9 +17,9 @@ register to google play store.<br>
 make app - test - fix - test - fix - ..<br>
 
 
-## 25.02.19 development meeting
+# 25.02.19 development meeting
 
-# To do list until next month<br>
+### To do list until next month<br>
 
 It should be able to be searched that analyzed results of database.<br>
 It should be able to survey after send questionnaires.<br>

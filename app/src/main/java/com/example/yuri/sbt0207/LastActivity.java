@@ -61,9 +61,9 @@ public class LastActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable(){
             @Override
             public void run() {
-                startActivity(intent); //다음화면으로 넘어감
                 finish();
             }
         },2000); //2초 뒤에 Runner객체 실행하도록 함
     }
+
 }

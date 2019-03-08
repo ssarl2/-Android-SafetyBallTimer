@@ -2,7 +2,7 @@
 
 ### To do list until next month<br>
 <ol>
-It should be able to be searched that analyzed results of database.<br>
+<li>It should be able to be searched that analyzed results of database.</li>
 It should be able to survey after send questionnaires.<br>
 When users finished the survey, application should be terminated.<br>
 If users access the application outside the specific time, It should show that they do not have a questionnaire.<br>

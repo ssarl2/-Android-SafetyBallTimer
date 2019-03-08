@@ -1,3 +1,16 @@
+# 25.02.19 development meeting
+
+### To do list until next month<br>
+
+It should be able to be searched that analyzed results of database.<br>
+It should be able to survey after send questionnaires.<br>
+When users finished the survey, application should be terminated.<br>
+If users access the application outside the specific time, It should show that they do not have a questionnaire.<br>
+If there is good UI more than before, UI should be changed.<br>
+Add function of delay when to reply a slide.<br>
+Add function of average of employees answer.<br>
+
+
 # 18.02.19 development meeting
 
 ### To do list until next week<br>
@@ -15,16 +28,3 @@ when we finished early,
 register to google play store.<br>
 
 make app - test - fix - test - fix - ..<br>
-
-
-# 25.02.19 development meeting
-
-### To do list until next month<br>
-
-It should be able to be searched that analyzed results of database.<br>
-It should be able to survey after send questionnaires.<br>
-When users finished the survey, application should be terminated.<br>
-If users access the application outside the specific time, It should show that they do not have a questionnaire.<br>
-If there is good UI more than before, UI should be changed.<br>
-Add function of delay when to reply a slide.<br>
-Add function of average of employees answer.<br>

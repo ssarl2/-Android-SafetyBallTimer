@@ -58,12 +58,24 @@ public class LastActivity extends AppCompatActivity {
 
             }
         });
-        handler.postDelayed(new Runnable(){
+       /* handler.postDelayed(new Runnable(){
             @Override
             public void run() {
                 finish();
             }
-        },2000); //2초 뒤에 Runner객체 실행하도록 함
+        },2000); //2초 뒤에 Runner객체 실행하도록 함 -> 이거 무슨 코드인지 잘 모르겠음*/
+        Handler delayHandler = new Handler();
+        delayHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                moveTaskToBack(true);
+
+                finish();
+
+                android.os.Process.killProcess(android.os.Process.myPid());
+            }
+        }, 3000);
+
     }
 
 }

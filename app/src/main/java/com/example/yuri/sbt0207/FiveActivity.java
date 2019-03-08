@@ -95,7 +95,7 @@ public class FiveActivity extends Activity {
                     startActivity(intent);
                     overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
                 }
-            }, 3000);
+            }, 2000);
 
         }
     };

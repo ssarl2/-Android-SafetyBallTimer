@@ -17,7 +17,7 @@ Add function of average of employees answer.<br>
 
 ### To do list until next week<br>
 <ul>
-we will combine all function.<br>
+<li>we will combine all function.</li>
 we will add 20 questions on firebase.<br>
 and receive randomly questions.<br>
 we can download application from notebook.<br>

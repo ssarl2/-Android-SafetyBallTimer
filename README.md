@@ -2,7 +2,7 @@
 
 To do list until next week,
 
-we will combine all function,
+we will combine all function. \n
 we will add 20 questions on firebase 
 and receive randomly questions,
 we can download application from notebook,

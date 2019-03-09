@@ -3,6 +3,7 @@ package com.example.yuri.sbt0207;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
@@ -61,20 +62,17 @@ public class LastActivity extends AppCompatActivity {
        /* handler.postDelayed(new Runnable(){
             @Override
             public void run() {
-                finish();
+
             }
         },2000); //2초 뒤에 Runner객체 실행하도록 함 -> 이거 무슨 코드인지 잘 모르겠음*/
         Handler delayHandler = new Handler();
         delayHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                moveTaskToBack(true);
-
-                finish();
-
-                android.os.Process.killProcess(android.os.Process.myPid());
+                ActivityCompat.finishAffinity(LastActivity.this);
             }
-        }, 3000);
+        }, 2000);
+
 
     }
 

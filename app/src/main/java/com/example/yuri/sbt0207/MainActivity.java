@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.content.Intent;
 
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -74,7 +76,12 @@ public class MainActivity extends AppCompatActivity {
         // 프로그레스바를 떼고 작동하는 함수
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
-
+            seekBar.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    return true;
+                }
+            });
             Handler delayHandler = new Handler();
             delayHandler.postDelayed(new Runnable() {
                 @Override

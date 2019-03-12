@@ -1,3 +1,16 @@
+# 11.03.19 development meeting
+
+### To do list until next month<br>
+<ul>
+<li>It should choose a user randomly.</li>
+<li>It should send a random question users.</li>
+<li>When it sent a question, should be able to have a limit time.</li>
+<li>A photo</li>
+</ul>
+
+
+---------------------------------------------------------------------------------------
+
 # 25.02.19 development meeting
 
 ### To do list until next month<br>

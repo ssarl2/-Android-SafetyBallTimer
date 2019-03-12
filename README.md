@@ -1,6 +1,6 @@
 # 11.03.19 development meeting
 
-### To do list until next month<br>
+### To do list until this week<br>
 <ul>
 <li>It should choose a user randomly.</li>
 <li>It should send a random question users.</li>
@@ -28,7 +28,7 @@
 
 # 18.02.19 development meeting
 
-### To do list until next week<br>
+### To do list until this week<br>
 <ul>
 <li>we will combine all function.</li>
 <li>we will add 20 questions on firebase.</li>

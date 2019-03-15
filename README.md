@@ -1,3 +1,16 @@
+# 11.03.19 development meeting
+
+### To do list until this week<br>
+<ul>
+<li>It should choose a user randomly.</li>
+<li>It should send a random question users.</li>
+<li>When it sent a question, should be able to have a limit time.</li>
+</ul>
+
+![image of plan](https://user-images.githubusercontent.com/37391569/54207911-b5ceba80-44e3-11e9-800c-59c4a00b6f3f.png)
+
+---------------------------------------------------------------------------------------
+
 # 25.02.19 development meeting
 
 ### To do list until next month<br>
@@ -15,7 +28,7 @@
 
 # 18.02.19 development meeting
 
-### To do list until next week<br>
+### To do list until this week<br>
 <ul>
 <li>we will combine all function.</li>
 <li>we will add 20 questions on firebase.</li>

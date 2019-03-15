@@ -9,8 +9,9 @@
         android:roundIcon="@drawable/mu"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".FeedbackActivity"></activity>
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".NoQuestionsActivity"></activity>
+        <activity android:name=".FeedbackActivity" />
+        <activity android:name=".MainActivity" />
         <activity android:name=".IntroActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,6 +24,7 @@
         <activity android:name=".FourActivity" />
         <activity android:name=".FiveActivity" />
         <activity android:name=".LastActivity" />
+
         <service android:name=".MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

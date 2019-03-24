@@ -3,7 +3,10 @@ package com.example.yuri.sbt0207;
 import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,7 +32,9 @@ import java.util.Random;
 
 public class IntroActivity extends Activity {
     private static final String TAG = "MyFirebaseMsgService";
+    private final String BROADCAST_MESSAGE = "sbt.noQuestions"; // 브로드캐스트 주소
 
+    private BroadcastReceiver mReceiver = null;
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference databaseReference = firebaseDatabase.getReference();
     public SharedPreferences prefs;
@@ -39,16 +44,32 @@ public class IntroActivity extends Activity {
     private String questionNum;
     private String question;
     private Intent intent;
+    private long limitTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.intro_activity);
+
         intent = getIntent();
         final FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
         final List<String> q_parametersList = new ArrayList<>();
         prefs = getSharedPreferences("Pref", MODE_PRIVATE);
         Handler handler = new Handler();
+
+        // START Get DataFromBackground
+        // 앱 위젯을 통해 어플로 접근 했을 시 데이터 삽입 방법
+        // 저장된 값을 불러오기 위해 같은 네임파일을 찾음.
+        SharedPreferences sharedPreferences = getSharedPreferences("backgroundData", MODE_PRIVATE);
+        limitTime = Long.parseLong(sharedPreferences.getString("limitTime", "0"));
+
+        SharedPreferences.Editor editor = sharedPreferences.edit(); // 설문조사를 끝나고 다시 들어갈 수 있는 것을 방지하기 위해 제한시간 초기화
+        editor.putString("limitTime",String.valueOf(limitTime));
+
+        questionNum = sharedPreferences.getString("questionNum", "");
+        question = sharedPreferences.getString("question", "");
+        questionNum = "a@"+questionNum;
+        // END Get DataFromBackground
 
         // START FCM PUSH
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -175,16 +196,20 @@ public class IntroActivity extends Activity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                long limitTime = 0;
 
                 if (intent.getStringExtra("limitTime") != null) // limitTime에 빈 값이 있는지 없는지 체크하고 변수 삽입.
                     limitTime = Long.parseLong(intent.getStringExtra("limitTime"));
+
                 long now = System.currentTimeMillis();
 
                 if (limitTime > now) { // 데이터가 있으면
 
-                    questionNum = intent.getStringExtra("questionNum");
-                    question = intent.getStringExtra("question");
+                    if (questionNum.split("@")[0].equals("a")) { // 앱 위젯을 통해 들어왔을시 데이터 넣는 방법
+                        questionNum = questionNum.split("@")[1];
+                    } else { // 알림창을 통해 들어왔을시 데이터 넣는 방법
+                        questionNum = intent.getStringExtra("questionNum");
+                        question = intent.getStringExtra("question");
+                    }
 
                     intent = new Intent(getApplicationContext(), TestActivity.class);
 

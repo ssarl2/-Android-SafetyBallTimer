@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -38,6 +39,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         questionNum = remoteMessage.getData().get("questionNum"); // 질문 번호 데이터
         question = remoteMessage.getData().get("question"); // 질문 데이터
 
+        // START save data to backGround
+        SharedPreferences sharedPreferences = getSharedPreferences("backgroundData",MODE_PRIVATE); //SharedPreferences를 기본모드로 설정
+        SharedPreferences.Editor editor = sharedPreferences.edit(); //저장을 하기위해 editor를 이용하여 값을 저장시켜준다.
+
+        editor.putString("limitTime",String.valueOf(limitTime));
+        editor.putString("questionNum",questionNum);
+        editor.putString("question",question);
+
+        editor.commit();
+        // END save data to backGround
+
         Log.i(TAG, "onMessageReceived:queNum " + remoteMessage.getData().get("questionNum"));
         Log.i(TAG, "onMessageReceived:que " + remoteMessage.getData().get("question"));
         Log.i(TAG, "onMessageReceived:val " + remoteMessage.getData().get("validTime"));
@@ -55,7 +67,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         intent.putExtra("questionNum", questionNum);
         intent.putExtra("question", question);
         sendBroadcast(intent);
-        //}
         // END BroadCast
 
         // TODO(developer): Handle FCM messages here.
@@ -66,7 +77,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
 
-            if (/* Check if data needs to be processed by long running job */ true) {
+            if (/* Check if data needs to be processed by long running job */ false) {
                 // For long-running tasks (10 seconds or more) use Firebase Job Dispatcher.
                 //scheduleJob();
             } else {
@@ -105,8 +116,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, channelId)
                         .setSmallIcon(android.R.drawable.btn_star)
-                        .setContentTitle("성공하자")
-                        .setContentText(validTime + "초")
+                        .setContentTitle("There is a question")
+                        .setContentText(validTime + "second (limit time)")
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)
                         .setContentIntent(pendingIntent)
@@ -179,6 +190,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      */
     private void sendRegistrationToServer(String token) {
         // TODO: Implement this method to send token to your app server.
+    }
+
+    @Override
+    public void onDeletedMessages() {
+        super.onDeletedMessages();
     }
 
     @Override

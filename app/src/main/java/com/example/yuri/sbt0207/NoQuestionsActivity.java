@@ -91,10 +91,8 @@ public class NoQuestionsActivity extends AppCompatActivity implements Runnable{
             intent.putExtra("question",question);
 
             startActivity(intent);
-        } else {
-            //Toast.makeText(getApplicationContext(), "not the time", Toast.LENGTH_SHORT).show();
-            //intent = new Intent(getApplicationContext(), NoQuestionsActivity.class);
-            //startActivity(intent);
+        } else { // 아무일도 없음
+
         }
         finish();
     }

@@ -9,7 +9,8 @@
         android:roundIcon="@drawable/mu"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".NoQuestionsActivity"></activity>
+        <activity android:name=".TestActivity"></activity>
+        <activity android:name=".NoQuestionsActivity" />
         <activity android:name=".FeedbackActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".IntroActivity">

@@ -4,17 +4,19 @@ import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -27,20 +29,31 @@ import java.util.Random;
 
 public class IntroActivity extends Activity {
     private static final String TAG = "MyFirebaseMsgService";
+
+    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    private DatabaseReference databaseReference = firebaseDatabase.getReference();
+    public SharedPreferences prefs;
+    public CountDownTimer mCountDown;
     long count = 0;
     long delayTime = 2000;
+    private String questionNum;
+    private String question;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.intro_activity); //xml , java 소스 연결
+        setContentView(R.layout.intro_activity);
+        intent = getIntent();
+        final FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+        final List<String> q_parametersList = new ArrayList<>();
+        prefs = getSharedPreferences("Pref", MODE_PRIVATE);
         Handler handler = new Handler();
-
 
         // START FCM PUSH
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // Create channel to show notifications.
-            String channelId  = getString(R.string.default_notification_channel_id);
+            String channelId = getString(R.string.default_notification_channel_id);
             String channelName = getString(R.string.default_notification_channel_name);
             NotificationManager notificationManager =
                     getSystemService(NotificationManager.class);
@@ -77,44 +90,70 @@ public class IntroActivity extends Activity {
                         }
 
                         // Get new Instance ID token
-                        String token = task.getResult().getToken();
-                        Log.d(TAG, token);
-
-                        // Log and toast
-                        String msg = getString(R.string.msg_token_fmt, token);
-                        Log.d(TAG, msg);
-                        //Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                        boolean isFirstRun = prefs.getBoolean("isFirstRun", true);//처음실행할때만 데이터 전달
+                        if (isFirstRun) {
+                            String token = task.getResult().getToken();
+                            Log.d(TAG, "GETTOKEN : " + token);
+                            databaseReference.child("gettoken").push().setValue(token);//토큰 값 파이어베이스에 푸시
+                            prefs.edit().putBoolean("isFirstRun", false).apply();//한번 푸시 한 이후로 다시 푸시안함 -> 삭제 후 재 다운로드(토큰값 변경)시 다시 토큰값 푸시
+                        }
                     }
                 });
         // [END retrieve_current_token]
 
         // END FCM PUSH
+/*
+        // STRAT CountDown
+        long now = System.currentTimeMillis(); // 현재 시각
+        if (MyFirebaseMessagingService.limitTime > now) { // 현재 시각보다 추후의 시간일 경우 작동
+            // 추후의 시각에서 현재 시간의 제외하여 타이머 값을 구하고
+            // 매 1초씩 시간이 흐름
+            mCountDown = new CountDownTimer(MyFirebaseMessagingService.limitTime - now, 1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    //timeView.setText("Remaining Time: " + millisUntilFinished / 1000);
+                } // 매 1초씩 마다 호출
 
-        final FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-        final List<String> q_parametersList = new ArrayList<>();
-
-        final Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-
-        mDatabase.getReference().child("Questions").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onFinish() {
+                    //Log.e(TAG, "onFinish: ");
+                    //ActivityCompat.finishAffinity(IntroActivity.this);
+                    // 시간 끝났다고 토스트 띄워주는게 좋을까?
+                } // 받은 시간이 다 지났을 시
+            }.start();
+        }
+        // END CountDown
+*/
+/*
+        // START Get Questions
+        final List<Answer> questionToAnswerHouse = new ArrayList<>();
+        mDatabase.getReference().child("Question").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                q_parametersList.clear();
-                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    String data = snapshot.getValue(String.class);
-                    count = count + 1000;
-                    q_parametersList.add(data);
+                Answer questionToAnswer;
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    questionToAnswer = snapshot.getValue(Answer.class);
+                    questionToAnswerHouse.add(questionToAnswer);
                 }
+
+                Intent intent = new Intent(getApplicationContext(),TestActivity.class);
+                intent.putExtra("questionNum",questionToAnswerHouse.get())
+
+
+                // 랜덤함수로 한 뒤에 번호 선택시 중복된 번호 제거하는 코드
                 Random rnd = new Random();
                 int position[] = new int[5];
-                for(int i=0; i<5; i++){
-                    position[i] = rnd.nextInt(20)+1;
-                    for(int j=0; j<i; j++){
-                        if(position[i] == position[j]){
+                for (int i = 0; i < 5; i++) {
+                    position[i] = rnd.nextInt(20) + 1;
+                    for (int j = 0; j < i; j++) {
+                        if (position[i] == position[j]) {
                             i--;
                         }
                     }
                 }
-                for(int k=0; k<5; k++){
+                // 랜덤함수로 한 뒤에 번호 선택시 중복된 번호 제거하는 코드
+
+                for (int k = 0; k < 5; k++) {
                     Log.d("Check data", q_parametersList.get(position[k]));
                     Log.d("카운트", String.valueOf(count));
                 }
@@ -123,7 +162,6 @@ public class IntroActivity extends Activity {
                 intent.putExtra("que3", q_parametersList.get(position[2]));
                 intent.putExtra("que4", q_parametersList.get(position[3]));
                 intent.putExtra("que5", q_parametersList.get(position[4]));
-
             }
 
             @Override
@@ -131,21 +169,44 @@ public class IntroActivity extends Activity {
 
             }
         });
-            handler.postDelayed(new Runnable(){
-                @Override
-                public void run() {
-                    startActivity(intent); //다음화면으로 넘어감
-                    finish();
+        // END Get Questions
+*/
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                long limitTime = 0;
+
+                if (intent.getStringExtra("limitTime") != null) // limitTime에 빈 값이 있는지 없는지 체크하고 변수 삽입.
+                    limitTime = Long.parseLong(intent.getStringExtra("limitTime"));
+                long now = System.currentTimeMillis();
+
+                if (limitTime > now) { // 데이터가 있으면
+
+                    questionNum = intent.getStringExtra("questionNum");
+                    question = intent.getStringExtra("question");
+
+                    intent = new Intent(getApplicationContext(), TestActivity.class);
+
+                    intent.putExtra("questionNum", questionNum);
+                    intent.putExtra("question", question);
+
+                    startActivity(intent);
+                } else {
+                    intent = new Intent(getApplicationContext(), NoQuestionsActivity.class);
+                    startActivity(intent);
                 }
+                finish();
+            }
 
-            },delayTime+count); //2초 뒤에 Runner객체 실행하도록 함
-
+        }, delayTime + count); // 2초 뒤에 Runner객체 실행하도록 함
 
 
     }
+    // END onCreate
 
     @Override
-    protected void onPause(){
+    protected void onPause() {
         super.onPause();
         finish();
     }

@@ -1,6 +1,7 @@
 package com.example.yuri.sbt0207;
 
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,35 +12,32 @@ import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
-    private TextView seekval1;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+public class TestActivity extends AppCompatActivity {
+    private TextView seekval6;
     private SeekBar moomin;
-    private TextView Q1;
-    String que1, que2, que3, que4, que5;
-    int Value1;
+    private TextView Q6;
+    String que1;
+    String questionNum;
+    int Value6;
     int answer1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        seekval1= (TextView)findViewById(R.id.seekText1);
+        seekval6= (TextView)findViewById(R.id.seekText1);
         moomin = (SeekBar)findViewById(R.id.seekBarMU);
         moomin.setOnSeekBarChangeListener(seekBarChangeListener); // 받아들인 값을 moomin 시크바에 적용시킴
-        Q1 = (TextView)findViewById(R.id.Q1);
+        Q6 = (TextView)findViewById(R.id.Q1);
         Intent intent = getIntent();
 
+        questionNum = intent.getStringExtra("questionNum");
         que1 = intent.getStringExtra("question");
-/*
 
-        que1 = intent.getExtras().getString("que1");
-        que2 = intent.getExtras().getString("que2");
-        que3 = intent.getExtras().getString("que3");
-        que4 = intent.getExtras().getString("que4");
-        que5 = intent.getExtras().getString("que5");
-*/
-
-        Q1.setText(que1);
+        Q6.setText(que1);
     }
 
     // 시크바의 체인지리스너 매개함수? 생성..
@@ -60,14 +58,14 @@ public class MainActivity extends AppCompatActivity {
             else
                 moomin.setThumb(getResources().getDrawable(R.drawable.mu));
             Log.e("nothing - - ", "onStartTrackingTouch: "+progress);
-            seekval1.setText(""+progress);
-            Value1=progress;
+            seekval6.setText(""+progress);
+            Value6=progress;
 
             // view가 시크바의 thumb 따라다니게 만드는 함수
             int padding= moomin.getPaddingLeft() + moomin.getPaddingRight();
             int sPos = moomin.getLeft() + moomin.getPaddingLeft();
-            int xPos = (moomin.getWidth()-padding) * moomin.getProgress() / moomin.getMax() + sPos - (seekval1.getWidth()/2);
-            seekval1.setX(xPos);
+            int xPos = (moomin.getWidth()-padding) * moomin.getProgress() / moomin.getMax() + sPos - (seekval6.getWidth()/2);
+            seekval6.setX(xPos);
             answer1 = progress;
         }
 
@@ -86,21 +84,22 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 }
             });
+
+            Answer answer_about_question = new Answer(); // Answer 클래스 초기화
+            answer_about_question.questionNum = questionNum; // 클래스에 데이터를 담아서
+            answer_about_question.value = Integer.toString(answer1);
+
+            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+            DatabaseReference databaseReference = firebaseDatabase.getReference();
+            databaseReference.child("Answers").push().setValue(answer_about_question); // 데이터를 담은 클래스 자체를 서버로 푸시
+
             Handler delayHandler = new Handler();
             delayHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Intent next_intent = new Intent(getBaseContext(), TwoActivity.class);
-                    next_intent.putExtra("que2", que2);
-                    next_intent.putExtra("que3", que3);
-                    next_intent.putExtra("que4", que4);
-                    next_intent.putExtra("que5", que5);
-                    next_intent.putExtra("ans1", answer1);
-                    startActivity(next_intent);
-                    overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
+                    ActivityCompat.finishAffinity(TestActivity.this);
                 }
             }, 2000);
-
         }
     };
 

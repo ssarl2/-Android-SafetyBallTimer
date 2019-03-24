@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".TestActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,10 +23,10 @@
             android:paddingTop="100dp">
 
             <TextView
-                android:id="@+id/Q1"
+                android:id="@+id/Q6"
                 android:layout_width="280dp"
                 android:layout_height="wrap_content"
-                android:text="Question1"
+                android:text="Question6"
                 android:textAlignment="center"
                 android:textSize="25dp" />
         </LinearLayout>
@@ -42,7 +42,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/seekText1"
+                    android:id="@+id/seekText6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|top"
@@ -61,7 +61,7 @@
                     android:thumb="@drawable/mu" />
 
                 <ImageView
-                    android:id="@+id/imageView3"
+                    android:id="@+id/imageView6"
                     android:layout_width="285dp"
                     android:layout_height="10dp"
                     android:layout_gravity="center|top"
@@ -87,19 +87,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right|center"
             android:paddingBottom="300dp"
-            android:progress="20"
+            android:progress="60"
             android:progressDrawable="@drawable/progressbar_progressbar1"
             android:rotation="-270"
             android:thumb="@drawable/tri"
             tools:layout_editor_absoluteX="61dp"
             tools:layout_editor_absoluteY="379dp" />
-
-        <TextView
-            android:id="@+id/tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Remaining time"
-            android:textSize="16dp" />
     </FrameLayout>
 
 </android.support.constraint.ConstraintLayout>

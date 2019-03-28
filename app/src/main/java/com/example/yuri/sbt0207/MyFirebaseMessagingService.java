@@ -39,6 +39,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         questionNum = remoteMessage.getData().get("questionNum"); // 질문 번호 데이터
         question = remoteMessage.getData().get("question"); // 질문 데이터
 
+        /**
+         * if you want to change how to start app
+         * you can use this way
+         */
+        /*
         // START save data to backGround
         SharedPreferences sharedPreferences = getSharedPreferences("backgroundData",MODE_PRIVATE); //SharedPreferences를 기본모드로 설정
         SharedPreferences.Editor editor = sharedPreferences.edit(); //저장을 하기위해 editor를 이용하여 값을 저장시켜준다.
@@ -49,6 +54,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         editor.commit();
         // END save data to backGround
+        */
 
         Log.i(TAG, "onMessageReceived:queNum " + remoteMessage.getData().get("questionNum"));
         Log.i(TAG, "onMessageReceived:que " + remoteMessage.getData().get("question"));
@@ -82,7 +88,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 //scheduleJob();
             } else {
                 // Handle message within 10 seconds
-                handleNow();
+                handleNow(limitTime, questionNum, question);
             }
 
         }
@@ -175,9 +181,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     /**
      * Handle time allotted to BroadcastReceivers.
      */
-    private void handleNow() {
+    private void handleNow(long limitTime, String questionNum, String question) {
         Log.d(TAG, "Short lived task is done.");
 
+        intent = new Intent(this, IntroActivity.class); // 알림탭 눌렀을 시 데이터를 받아서 이 클래스로 이동
+
+        intent.putExtra("limitTime",String.valueOf(limitTime));
+        intent.putExtra("questionNum",questionNum);
+        intent.putExtra("question",question);
+        Log.e(TAG, "handleNowwwwww: " );
+        startActivity(intent);
     }
 
     /**

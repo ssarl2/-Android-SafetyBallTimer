@@ -87,13 +87,18 @@ public class TestActivity extends AppCompatActivity {
                     return true;
                 }
             });
+
             Calendar cal = new GregorianCalendar();
+
+            // 일,월,년, 하루시간을 분으로 "ddmmyy-minutes"
+            // ex) 2019년3월29일 오전7시3분 "290319-423"
+            String nowTime = String.valueOf((cal.get(Calendar.HOUR_OF_DAY)*60)+(cal.get(Calendar.MINUTE))); // 이곳에 보낸시간을 스트링값으로 넣으면 됩니다.
 
             Answer answer_about_question = new Answer(); // Answer 클래스 초기화
             answer_about_question.questionNum = questionNum; // 클래스에 데이터를 담아서
             answer_about_question.value = Integer.toString(answer1);
-            answer_about_question.now =String.valueOf((cal.get(Calendar.HOUR_OF_DAY)*60)+(cal.get(Calendar.MINUTE)));
-            Log.d("태그",String.valueOf((cal.get(Calendar.HOUR_OF_DAY)*60)+(cal.get(Calendar.MINUTE))));
+            answer_about_question.sentTime = nowTime;
+            Log.d("태그",nowTime);
             //Intent intentt = getIntent();
             //int now = intentt.getExtras().getInt("now::"); /*int형*/
 
@@ -105,7 +110,8 @@ public class TestActivity extends AppCompatActivity {
             delayHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    ActivityCompat.finishAffinity(TestActivity.this);
+                    Intent intent = new Intent(getApplicationContext(), FeedbackActivity.class);
+                    startActivity(intent);
                 }
             }, 2000);
         }

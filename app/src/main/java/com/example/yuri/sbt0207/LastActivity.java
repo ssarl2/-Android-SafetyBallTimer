@@ -20,6 +20,7 @@ public class LastActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.last_activity);
+        /*
         Handler handler = new Handler();
         final FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
         final List<String> q_parametersList = new ArrayList<>();
@@ -59,12 +60,13 @@ public class LastActivity extends AppCompatActivity {
 
             }
         });
-       /* handler.postDelayed(new Runnable(){
+       *//* handler.postDelayed(new Runnable(){
             @Override
             public void run() {
 
             }
-        },2000); //2초 뒤에 Runner객체 실행하도록 함 -> 이거 무슨 코드인지 잘 모르겠음*/
+        },2000); //2초 뒤에 Runner객체 실행하도록 함 -> 이거 무슨 코드인지 잘 모르겠음*//*
+       */
         Handler delayHandler = new Handler();
         delayHandler.postDelayed(new Runnable() {
             @Override

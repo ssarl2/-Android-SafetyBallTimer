@@ -33,7 +33,7 @@ public class FeedbackActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getBaseContext(),LastActivity.class);
                 feedbackval = edit.getText().toString();
-                mDatabase.getReference().child("Reply").push().setValue(feedbackval);
+                mDatabase.getReference().child("Feedbacks").push().setValue(feedbackval);
 
                 startActivity(intent);
 

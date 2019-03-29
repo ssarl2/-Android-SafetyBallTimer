@@ -57,9 +57,15 @@ public class IntroActivity extends Activity {
         prefs = getSharedPreferences("Pref", MODE_PRIVATE);
         Handler handler = new Handler();
 
+
+        /**
+         * if you want to change how to start app
+         * you can use this way
+         */
+        /*
         // START Get DataFromBackground
         // 앱 위젯을 통해 어플로 접근 했을 시 데이터 삽입 방법
-        // 저장된 값을 불러오기 위해 같은 네임파일을 찾음.
+        // 저장된 값(valid)을 백그라운드에서 불러오기 위해 같은 네임파일을 찾음.
         SharedPreferences sharedPreferences = getSharedPreferences("backgroundData", MODE_PRIVATE);
         limitTime = Long.parseLong(sharedPreferences.getString("limitTime", "0"));
 
@@ -70,6 +76,7 @@ public class IntroActivity extends Activity {
         question = sharedPreferences.getString("question", "");
         questionNum = "a@"+questionNum;
         // END Get DataFromBackground
+        */
 
         // START FCM PUSH
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -197,19 +204,26 @@ public class IntroActivity extends Activity {
             @Override
             public void run() {
 
-                if (intent.getStringExtra("limitTime") != null) // limitTime에 빈 값이 있는지 없는지 체크하고 변수 삽입.
+                if (intent.getStringExtra("limitTime") != null) {// limitTime에 빈 값이 있는지 없는지 체크하고 변수 삽입.
                     limitTime = Long.parseLong(intent.getStringExtra("limitTime"));
-
+                    Log.e( "runnnnnn: ",String.valueOf(limitTime));
+                }
                 long now = System.currentTimeMillis();
 
                 if (limitTime > now) { // 데이터가 있으면
 
+                    /**
+                     * if you want to change how to start app
+                     * you can use this way
+                     */
+                    /*
                     if (questionNum.split("@")[0].equals("a")) { // 앱 위젯을 통해 들어왔을시 데이터 넣는 방법
                         questionNum = questionNum.split("@")[1];
                     } else { // 알림창을 통해 들어왔을시 데이터 넣는 방법
+                    */
                         questionNum = intent.getStringExtra("questionNum");
                         question = intent.getStringExtra("question");
-                    }
+                    // }
 
                     intent = new Intent(getApplicationContext(), TestActivity.class);
 

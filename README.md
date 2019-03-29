@@ -1,3 +1,27 @@
+# 25.03.19 development meeting
+
+### To do list until this week<br>
+<ul>
+<li>ServerApp should have a status button added.</li>
+<li>ServerApp UI should be updated to more familiar UI.</li>
+<li>Status button of serverApp should be had status graph about answers of User.</li>
+<li>ClientApps should be immediately opened when it receive a message from ServerApp.</li>
+<li>Notification sounds should be loud.</li>
+<li>ClientApps should send current time data to Firebase Server if user touch the send button.</li>
+</ul>
+
+---------------------------------------------------------------------------------------
+
+# 18.03.19 development meeting
+
+### To do list until this week<br>
+<ul>
+<li>Some problems should be fixed.</li>
+<li>OriginalApp should be combined with testApp.</li>
+</ul>
+
+---------------------------------------------------------------------------------------
+
 # 11.03.19 development meeting
 
 ### To do list until this week<br>

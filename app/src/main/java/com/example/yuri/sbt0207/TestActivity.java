@@ -15,6 +15,9 @@ import android.widget.TextView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 public class TestActivity extends AppCompatActivity {
     private TextView seekval6;
     private SeekBar moomin;
@@ -84,14 +87,19 @@ public class TestActivity extends AppCompatActivity {
                     return true;
                 }
             });
+            Calendar cal = new GregorianCalendar();
 
             Answer answer_about_question = new Answer(); // Answer 클래스 초기화
             answer_about_question.questionNum = questionNum; // 클래스에 데이터를 담아서
             answer_about_question.value = Integer.toString(answer1);
+            answer_about_question.now =String.valueOf((cal.get(Calendar.HOUR_OF_DAY)*60)+(cal.get(Calendar.MINUTE)));
+            Log.d("태그",String.valueOf((cal.get(Calendar.HOUR_OF_DAY)*60)+(cal.get(Calendar.MINUTE))));
+            //Intent intentt = getIntent();
+            //int now = intentt.getExtras().getInt("now::"); /*int형*/
 
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
             DatabaseReference databaseReference = firebaseDatabase.getReference();
-            databaseReference.child("Answers").push().setValue(answer_about_question); // 데이터를 담은 클래스 자체를 서버로 푸시
+            databaseReference.child("Answers").push().setValue(answer_about_question);// 데이터를 담은 클래스 자체를 서버로 푸시
 
             Handler delayHandler = new Handler();
             delayHandler.postDelayed(new Runnable() {

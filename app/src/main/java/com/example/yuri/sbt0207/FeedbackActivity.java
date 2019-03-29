@@ -34,7 +34,9 @@ public class FeedbackActivity extends AppCompatActivity {
                 Intent intent = new Intent(getBaseContext(),LastActivity.class);
                 feedbackval = edit.getText().toString();
                 mDatabase.getReference().child("Reply").push().setValue(feedbackval);
+
                 startActivity(intent);
+
                 overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
             }
         });

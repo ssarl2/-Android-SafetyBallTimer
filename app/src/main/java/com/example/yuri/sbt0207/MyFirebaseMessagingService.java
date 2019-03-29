@@ -6,9 +6,11 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -33,9 +35,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         long limitTime;
         String questionNum;
         String question;
+        long now;
 
         validTime = Long.parseLong(remoteMessage.getData().get("validTime")); // long 타입의 변수로 데이터를 받음
         limitTime = System.currentTimeMillis() + (validTime * 1000); // 현재 시간에 validTime초를 더해준 제한시간 변수를 설정.
+        //now = (int)limitTime/(1000*60)+(int)limitTime/(1000*60*60*60);//파이어베이스에서 받고 서버에서 나타낼때 now/60
+        //Log.d( "now: ",String.valueOf(now));
+        intent = new Intent(getApplicationContext(), TestActivity.class);
+        //intent.putExtra("now",now);
+
+
         questionNum = remoteMessage.getData().get("questionNum"); // 질문 번호 데이터
         question = remoteMessage.getData().get("question"); // 질문 데이터
 
@@ -119,7 +128,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         .setContentTitle("There is a question")
                         .setContentText(validTime + "second (limit time)")
                         .setAutoCancel(true)
-                        .setSound(defaultSoundUri)
+                        //.setSound(defaultSoundUri)
                         .setContentIntent(pendingIntent)
                         .setTimeoutAfter(validTime * 1000); // validTime 지난 후 알림제거
 
@@ -135,8 +144,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         } else {
 
         }
+        MediaPlayer player = MediaPlayer.create(this,R.raw.alram);
+        player.start();
+        //Vibrator vib = (Vibrator)getSystemService(VIBRATOR_SERVICE);
+        //vib.vibrate(1500);
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+
+
     }
 
     // [START on_new_token]

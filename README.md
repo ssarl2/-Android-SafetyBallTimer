@@ -2,7 +2,7 @@
 
 ### To do list until this week<br>
 <ul>
-<li>ServerApp should be added a status button.</li>
+<li>ServerApp should have a status button added.</li>
 <li>ServerApp UI should be updated to more familiar UI.</li>
 <li>Status button of serverApp should be had status graph about answers of User.</li>
 <li>ClientApps should be immediately opened when it receive a message from ServerApp.</li>

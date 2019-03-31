@@ -92,7 +92,7 @@ public class TestActivity extends AppCompatActivity {
 
             // 일,월,년, 하루시간을 분으로 "ddmmyy-minutes"
             // ex) 2019년3월29일 오전7시3분 "290319-423"
-            String nowTime = String.valueOf((((cal.get(Calendar.DATE))*1000000)+(cal.get(Calendar.MONTH)+1)*10000+(cal.get(Calendar.YEAR)))+"-"+((cal.get(Calendar.HOUR_OF_DAY)*60)+cal.get(Calendar.MINUTE))); // 이곳에 보낸시간을 스트링값으로 넣으면 됩니다.
+            String nowTime = String.valueOf(((cal.get(Calendar.HOUR_OF_DAY)*60)+cal.get(Calendar.MINUTE))); // 이곳에 보낸시간을 스트링값으로 넣으면 됩니다.
 
             Answer answer_about_question = new Answer(); // Answer 클래스 초기화
             answer_about_question.questionNum = questionNum; // 클래스에 데이터를 담아서

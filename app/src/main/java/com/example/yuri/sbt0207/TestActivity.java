@@ -1,6 +1,7 @@
 package com.example.yuri.sbt0207;
 
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,10 +13,15 @@ import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class TestActivity extends AppCompatActivity {
@@ -26,6 +32,9 @@ public class TestActivity extends AppCompatActivity {
     String questionNum;
     int Value6;
     int answer1;
+    String target_id;
+    int target_answer;
+    String getTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +103,7 @@ public class TestActivity extends AppCompatActivity {
             // ex) 2019년3월29일 오전7시3분 "290319-423"
             String nowTime = String.valueOf(((cal.get(Calendar.HOUR_OF_DAY)*60)+cal.get(Calendar.MINUTE))); // 이곳에 보낸시간을 스트링값으로 넣으면 됩니다.
 
-            Answer answer_about_question = new Answer(); // Answer 클래스 초기화
+            final Answer answer_about_question = new Answer(); // Answer 클래스 초기화
             answer_about_question.questionNum = questionNum; // 클래스에 데이터를 담아서
             answer_about_question.value = Integer.toString(answer1);
             answer_about_question.sentTime = nowTime;
@@ -102,18 +111,71 @@ public class TestActivity extends AppCompatActivity {
             //Intent intentt = getIntent();
             //int now = intentt.getExtras().getInt("now::"); /*int형*/
 
-            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-            DatabaseReference databaseReference = firebaseDatabase.getReference();
+            final Intent intent = new Intent(getApplicationContext(), FeedbackActivity.class);
+
+            final FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+            final DatabaseReference databaseReference = firebaseDatabase.getReference();
             databaseReference.child("Answers").push().setValue(answer_about_question);// 데이터를 담은 클래스 자체를 서버로 푸시
 
-            Handler delayHandler = new Handler();
+            databaseReference.child("Analyze").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                        Analyze analyze = snapshot.getValue(Analyze.class);
+                        target_answer = analyze.total_value;
+                        String id = snapshot.getKey();
+                        if(analyze.que_num == Integer.parseInt(answer_about_question.questionNum)){
+                            target_id = id;
+                            long now = System.currentTimeMillis();
+                            Date date = new Date(now);
+                            SimpleDateFormat sdf = new SimpleDateFormat("HH");
+                            getTime = sdf.format(date);
+                            Log.d("현재 시각", getTime);
+                        }
+                    }
+
+                    startActivity(intent);
+                    finish();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+            databaseReference.child("Analyze").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Log.d("타켓 아이디", target_id);
+                    if(target_id != null){
+                        String data = dataSnapshot.child(target_id).child("count").getValue().toString();
+                        int count = Integer.valueOf(data);
+                        count++;
+
+                        EachValue eachValue = new EachValue();
+                        eachValue.senttime = getTime;
+                        eachValue.value = Integer.parseInt(answer_about_question.value);
+                        databaseReference.child("Analyze").child(target_id).child("total_value").setValue(answer_about_question.value + target_answer);
+                        databaseReference.child("Analyze").child(target_id).child("count").setValue(count);
+                        databaseReference.child("Analyze").child(target_id).child("EachValue").push().setValue(eachValue);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+            /*Handler delayHandler = new Handler();
             delayHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     Intent intent = new Intent(getApplicationContext(), FeedbackActivity.class);
                     startActivity(intent);
                 }
-            }, 2000);
+            }, 2000);*/
         }
     };
 

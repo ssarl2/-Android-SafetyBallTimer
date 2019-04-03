@@ -29,7 +29,7 @@ public class TestActivity extends AppCompatActivity {
     private SeekBar moomin;
     private TextView Q6;
     String que1;
-    String questionNum;
+    int questionNum;
     int Value6;
     int answer1;
     String target_id;
@@ -105,8 +105,8 @@ public class TestActivity extends AppCompatActivity {
 
             final Answer answer_about_question = new Answer(); // Answer 클래스 초기화
             answer_about_question.questionNum = questionNum; // 클래스에 데이터를 담아서
-            answer_about_question.value = Integer.toString(answer1);
-            answer_about_question.sentTime = nowTime;
+            answer_about_question.value = answer1;
+            answer_about_question.sentTime = Integer.parseInt(nowTime);
             Log.d("태그",nowTime);
             //Intent intentt = getIntent();
             //int now = intentt.getExtras().getInt("now::"); /*int형*/
@@ -124,7 +124,7 @@ public class TestActivity extends AppCompatActivity {
                         Analyze analyze = snapshot.getValue(Analyze.class);
                         target_answer = analyze.total_value;
                         String id = snapshot.getKey();
-                        if(analyze.que_num == Integer.parseInt(answer_about_question.questionNum)){
+                        if(analyze.que_num == answer_about_question.questionNum){
                             target_id = id;
                             long now = System.currentTimeMillis();
                             Date date = new Date(now);
@@ -155,7 +155,7 @@ public class TestActivity extends AppCompatActivity {
 
                         EachValue eachValue = new EachValue();
                         eachValue.senttime = getTime;
-                        eachValue.value = Integer.parseInt(answer_about_question.value);
+                        eachValue.value = answer_about_question.value;
                         databaseReference.child("Analyze").child(target_id).child("total_value").setValue(answer_about_question.value + target_answer);
                         databaseReference.child("Analyze").child(target_id).child("count").setValue(count);
                         databaseReference.child("Analyze").child(target_id).child("EachValue").push().setValue(eachValue);

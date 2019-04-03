@@ -1,7 +1,7 @@
 package com.example.yuri.sbt0207;
 
 public class Answer {
-    public String questionNum;
-    public String value;
-    public String sentTime;
+    public int questionNum;
+    public int value;
+    public int sentTime;
 }

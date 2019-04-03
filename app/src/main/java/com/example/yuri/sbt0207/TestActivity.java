@@ -29,7 +29,7 @@ public class TestActivity extends AppCompatActivity {
     private SeekBar moomin;
     private TextView Q6;
     String que1;
-    int questionNum;
+    String questionNum;
     int Value6;
     int answer1;
     String target_id;
@@ -104,7 +104,7 @@ public class TestActivity extends AppCompatActivity {
             String nowTime = String.valueOf(((cal.get(Calendar.HOUR_OF_DAY)*60)+cal.get(Calendar.MINUTE))); // 이곳에 보낸시간을 스트링값으로 넣으면 됩니다.
 
             final Answer answer_about_question = new Answer(); // Answer 클래스 초기화
-            answer_about_question.questionNum = questionNum; // 클래스에 데이터를 담아서
+            answer_about_question.questionNum = Integer.parseInt(questionNum); // 클래스에 데이터를 담아서
             answer_about_question.value = answer1;
             answer_about_question.sentTime = Integer.parseInt(nowTime);
             Log.d("태그",nowTime);

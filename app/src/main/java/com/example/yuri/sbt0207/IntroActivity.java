@@ -120,13 +120,13 @@ public class IntroActivity extends Activity {
                         // Get new Instance ID token
                         boolean isFirstRun = prefs.getBoolean("isFirstRun", true);//처음실행할때만 데이터 전달
                         Log.d("불리언",String.valueOf(isFirstRun));
-                        if (isFirstRun==false) {
+                        if (isFirstRun==true) {
                             Log.d("인트로","액티비티1");
                             String token = task.getResult().getToken();
                             Log.d(TAG, "GETTOKEN : " + token);
                             databaseReference.child("gettoken").push().setValue(token);//토큰 값 파이어베이스에 푸시
                             SharedPreferences.Editor editor = prefs.edit();
-                            editor.putBoolean("isFirstRun",true);
+                            editor.putBoolean("isFirstRun",false);
                             editor.commit();//한번 푸시 한 이후로 다시 푸시안함 -> 삭제 후 재 다운로드(토큰값 변경)시 다시 토큰값 푸시
                         }
                     }

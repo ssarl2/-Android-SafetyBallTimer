@@ -119,14 +119,12 @@ public class IntroActivity extends Activity {
 
                         // Get new Instance ID token
                         boolean isFirstRun = prefs.getBoolean("isFirstRun", true);//처음실행할때만 데이터 전달
-                        Log.d("불리언",String.valueOf(isFirstRun));
-                        if (isFirstRun==true) {
-                            Log.d("인트로","액티비티1");
+                        if (isFirstRun) {
                             String token = task.getResult().getToken();
                             Log.d(TAG, "GETTOKEN : " + token);
                             databaseReference.child("gettoken").push().setValue(token);//토큰 값 파이어베이스에 푸시
                             SharedPreferences.Editor editor = prefs.edit();
-                            editor.putBoolean("isFirstRun",false);
+                            editor.putBoolean("isFirstRun",false); // false로 저장함으로써 다시는 이 if 문에 들어오지 못하게 한다.
                             editor.commit();//한번 푸시 한 이후로 다시 푸시안함 -> 삭제 후 재 다운로드(토큰값 변경)시 다시 토큰값 푸시
                         }
                     }
@@ -135,75 +133,6 @@ public class IntroActivity extends Activity {
         // [END retrieve_current_token]
 
         // END FCM PUSH
-/*
-        // STRAT CountDown
-        long now = System.currentTimeMillis(); // 현재 시각
-        if (MyFirebaseMessagingService.limitTime > now) { // 현재 시각보다 추후의 시간일 경우 작동
-            // 추후의 시각에서 현재 시간의 제외하여 타이머 값을 구하고
-            // 매 1초씩 시간이 흐름
-            mCountDown = new CountDownTimer(MyFirebaseMessagingService.limitTime - now, 1000) {
-                @Override
-                public void onTick(long millisUntilFinished) {
-                    //timeView.setText("Remaining Time: " + millisUntilFinished / 1000);
-                } // 매 1초씩 마다 호출
-
-                @Override
-                public void onFinish() {
-                    //Log.e(TAG, "onFinish: ");
-                    //ActivityCompat.finishAffinity(IntroActivity.this);
-                    // 시간 끝났다고 토스트 띄워주는게 좋을까?
-                } // 받은 시간이 다 지났을 시
-            }.start();
-        }
-        // END CountDown
-*/
-/*
-        // START Get Questions
-        final List<Answer> questionToAnswerHouse = new ArrayList<>();
-        mDatabase.getReference().child("Question").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Answer questionToAnswer;
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    questionToAnswer = snapshot.getValue(Answer.class);
-                    questionToAnswerHouse.add(questionToAnswer);
-                }
-
-                Intent intent = new Intent(getApplicationContext(),TestActivity.class);
-                intent.putExtra("questionNum",questionToAnswerHouse.get())
-
-
-                // 랜덤함수로 한 뒤에 번호 선택시 중복된 번호 제거하는 코드
-                Random rnd = new Random();
-                int position[] = new int[5];
-                for (int i = 0; i < 5; i++) {
-                    position[i] = rnd.nextInt(20) + 1;
-                    for (int j = 0; j < i; j++) {
-                        if (position[i] == position[j]) {
-                            i--;
-                        }
-                    }
-                }
-                // 랜덤함수로 한 뒤에 번호 선택시 중복된 번호 제거하는 코드
-
-                for (int k = 0; k < 5; k++) {
-                    Log.d("Check data", q_parametersList.get(position[k]));
-                    Log.d("카운트", String.valueOf(count));
-                }
-                intent.putExtra("que1", q_parametersList.get(position[0]));
-                intent.putExtra("que2", q_parametersList.get(position[1]));
-                intent.putExtra("que3", q_parametersList.get(position[2]));
-                intent.putExtra("que4", q_parametersList.get(position[3]));
-                intent.putExtra("que5", q_parametersList.get(position[4]));
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        // END Get Questions
-*/
 
         handler.postDelayed(new Runnable() {
             @Override

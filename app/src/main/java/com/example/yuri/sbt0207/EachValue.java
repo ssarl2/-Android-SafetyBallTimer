@@ -7,11 +7,12 @@ import java.io.Serializable;
  */
 
 public class EachValue implements Serializable {
-    public String senttime;
+
+    public String sentTime;
     public int value;
 
     public EachValue(){
-        senttime = "empty";
+        sentTime = "empty";
         value = 0;
     }
 }

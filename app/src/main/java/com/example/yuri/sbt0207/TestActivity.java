@@ -2,7 +2,6 @@ package com.example.yuri.sbt0207;
 
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,9 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 public class TestActivity extends AppCompatActivity {
     private TextView seekval6;
@@ -32,8 +29,6 @@ public class TestActivity extends AppCompatActivity {
     String questionNum;
     int Value6;
     int answer1;
-    String target_id;
-    int target_answer;
     String getTime;
 
     @Override
@@ -97,69 +92,74 @@ public class TestActivity extends AppCompatActivity {
                 }
             });
 
-            Calendar cal = new GregorianCalendar();
-
             // 일,월,년, 하루시간을 분으로 "ddmmyy-minutes"
             // ex) 2019년3월29일 오전7시3분 "290319-423"
-            String nowTime = String.valueOf(((cal.get(Calendar.HOUR_OF_DAY)*60)+cal.get(Calendar.MINUTE))); // 이곳에 보낸시간을 스트링값으로 넣으면 됩니다.
 
-            final Answer answer_about_question = new Answer(); // Answer 클래스 초기화
-            answer_about_question.questionNum = Integer.parseInt(questionNum); // 클래스에 데이터를 담아서
-            answer_about_question.value = answer1;
-            answer_about_question.sentTime = Integer.parseInt(nowTime);
-            Log.d("태그",nowTime);
-            //Intent intentt = getIntent();
-            //int now = intentt.getExtras().getInt("now::"); /*int형*/
-
-            final Intent intent = new Intent(getApplicationContext(), FeedbackActivity.class);
 
             final FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
             final DatabaseReference databaseReference = firebaseDatabase.getReference();
-            databaseReference.child("Answers").push().setValue(answer_about_question);// 데이터를 담은 클래스 자체를 서버로 푸시
 
+            // START Analyze(전체 질문에 대한 분석값들)의 데이터 받기
+            // 다시 수신할 때 ValueEventListener는 모든 값을 수신하였습니다.
             databaseReference.child("Analyze").addValueEventListener(new ValueEventListener() {
                 @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                        Analyze analyze = snapshot.getValue(Analyze.class);
-                        target_answer = analyze.total_value;
-                        String id = snapshot.getKey();
-                        if(analyze.que_num == answer_about_question.questionNum){
-                            target_id = id;
-                            long now = System.currentTimeMillis();
-                            Date date = new Date(now);
-                            SimpleDateFormat sdf = new SimpleDateFormat("HH");
-                            getTime = sdf.format(date);
-                            Log.d("현재 시각", getTime);
-                        }
-                    }
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) { // 자식 데이터를 처리하는 공간
 
-                    startActivity(intent);
-                    finish();
                 }
 
                 @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
+                public void onCancelled(@NonNull DatabaseError databaseError) { // Snapshot 이후에 or 처음부터 데이터가 없다면 호출되는 공간
 
                 }
             });
+            // END Analyze(전체 질문에 대한 분석값들)의 데이터 처리
 
+            // reference https://stack07142.tistory.com/282
+
+            // START Analyze(전체 질문에 대한 분석값들)의 데이터 받기
+            // 다시 수신할 때 Single ValueEventListener는 더 이상 동작하지 않음을 알 수 있습니다.
             databaseReference.child("Analyze").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    Log.d("타켓 아이디", target_id);
-                    if(target_id != null){
-                        String data = dataSnapshot.child(target_id).child("count").getValue().toString();
-                        int count = Integer.valueOf(data);
-                        count++;
 
-                        EachValue eachValue = new EachValue();
-                        eachValue.senttime = getTime;
-                        eachValue.value = answer_about_question.value;
-                        databaseReference.child("Analyze").child(target_id).child("total_value").setValue(answer_about_question.value + target_answer);
-                        databaseReference.child("Analyze").child(target_id).child("count").setValue(count);
-                        databaseReference.child("Analyze").child(target_id).child("EachValue").push().setValue(eachValue);
+                    String target_id = null;
+                    int target_answer = 0;
+
+                    for(DataSnapshot snapshot : dataSnapshot.getChildren()){ // 자식(데이터(질문에 대한))이 있다면 계속 반복 반환
+
+                        Analyze analyze = snapshot.getValue(Analyze.class); // 만족하는 if값이 나올때까지 계속 반복
+
+                        if(analyze.que_num == Integer.valueOf(questionNum)){ // 현재 클라이언트가 받은 질문에 대한 번호와 일치하는 analze가 있다면
+
+                            target_id = snapshot.getKey(); // 파이어베이스의 클래스 키 값
+                            target_answer = analyze.total_value; // 토탈 벨류는 일단 따로 저장해 놓는다
+
+                            // START getTime
+                            long now = System.currentTimeMillis();
+                            Date date = new Date(now);
+                            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm-dd/MM/yy");
+                            getTime = sdf.format(date);
+                            Log.d("현재 시각", getTime);
+                            // END getTime
+
+                            break;
+                        }
                     }
+
+                    // count answers
+                    String data = dataSnapshot.child(target_id).child("count").getValue().toString();
+                    int count = Integer.valueOf(data);
+                    count++;
+
+                    // START PUSH
+                    EachValue eachValue = new EachValue();
+                    eachValue.sentTime = getTime;
+                    eachValue.value = Value6;
+                    databaseReference.child("Analyze").child(target_id).child("total_value").setValue(Value6 + target_answer);
+                    databaseReference.child("Analyze").child(target_id).child("count").setValue(count);
+                    databaseReference.child("Analyze").child(target_id).child("EachValue").push().setValue(eachValue);
+                    // END PUSH
+
                 }
 
                 @Override
@@ -167,15 +167,16 @@ public class TestActivity extends AppCompatActivity {
 
                 }
             });
+            // END Analyze(전체 질문에 대한 분석값들)의 데이터 받기
 
-            /*Handler delayHandler = new Handler();
+            Handler delayHandler = new Handler();
             delayHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     Intent intent = new Intent(getApplicationContext(), FeedbackActivity.class);
                     startActivity(intent);
                 }
-            }, 2000);*/
+            }, 2000);
         }
     };
 

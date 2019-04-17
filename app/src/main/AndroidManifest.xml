@@ -5,9 +5,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/sbtfor"
+        android:icon="@drawable/iconfor"
         android:label="SBT"
-        android:roundIcon="@drawable/sbtfor"
+        android:roundIcon="@drawable/iconfor"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".TestActivity"></activity>

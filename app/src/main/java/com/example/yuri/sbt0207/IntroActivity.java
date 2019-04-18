@@ -4,9 +4,7 @@ import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,17 +15,13 @@ import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 
 public class IntroActivity extends Activity {
@@ -101,7 +95,7 @@ public class IntroActivity extends Activity {
         if (getIntent().getExtras() != null) {
             for (String key : getIntent().getExtras().keySet()) {
                 Object value = getIntent().getExtras().get(key);
-                Log.d(TAG, "Key: " + key + " Value: " + value);
+                Log.d(TAG, "Key: " + key + " value: " + value);
             }
         }
         // [END handle_data_extras]
@@ -159,7 +153,7 @@ public class IntroActivity extends Activity {
                         question = intent.getStringExtra("question");
                     // }
 
-                    intent = new Intent(getApplicationContext(), TestActivity.class);
+                    intent = new Intent(getApplicationContext(), MainActivity.class);
 
                     intent.putExtra("questionNum", questionNum);
                     intent.putExtra("question", question);

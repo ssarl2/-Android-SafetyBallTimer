@@ -5,12 +5,10 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -41,7 +39,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         limitTime = System.currentTimeMillis() + (validTime * 1000); // 현재 시간에 validTime초를 더해준 제한시간 변수를 설정.
         //now = (int)limitTime/(1000*60)+(int)limitTime/(1000*60*60*60);//파이어베이스에서 받고 서버에서 나타낼때 now/60
         //Log.d( "now: ",String.valueOf(now));
-        intent = new Intent(getApplicationContext(), TestActivity.class);
+        intent = new Intent(getApplicationContext(), MainActivity.class);
         //intent.putExtra("now",now);
 
 

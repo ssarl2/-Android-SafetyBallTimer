@@ -4,12 +4,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
 
 public class NoQuestionsActivity extends AppCompatActivity implements Runnable{
 
@@ -85,7 +81,7 @@ public class NoQuestionsActivity extends AppCompatActivity implements Runnable{
 
         if (limitTime > now) { // 데이터가 있으면
 
-            intent = new Intent(getApplicationContext(), TestActivity.class);
+            intent = new Intent(getApplicationContext(), MainActivity.class);
 
             intent.putExtra("questionNum",questionNum);
             intent.putExtra("question",question);

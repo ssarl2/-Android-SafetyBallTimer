@@ -48,7 +48,7 @@ public class LastActivity extends AppCompatActivity {
                 for(int k=0; k<5; k++){
                     Log.d("Check data", q_parametersList.get(position[k]));
                 }
-                intent.putExtra("que1", q_parametersList.get(position[0]));
+                intent.putExtra("question", q_parametersList.get(position[0]));
                 intent.putExtra("que2", q_parametersList.get(position[1]));
                 intent.putExtra("que3", q_parametersList.get(position[2]));
                 intent.putExtra("que4", q_parametersList.get(position[3]));

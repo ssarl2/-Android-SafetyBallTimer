@@ -1,6 +1,7 @@
 package com.example.yuri.sbt0207;
 
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,64 +12,68 @@ import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class MainActivity extends AppCompatActivity {
-    private TextView seekval1;
+    private TextView seekValue;
     private SeekBar moomin;
-    private TextView Q1;
-    String que1, que2, que3, que4, que5;
-    int Value1;
-    int answer1;
+    private TextView textViewQuestion;
+    String question;
+    String questionNum;
+    int value;
+    int answer;
+    String getTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        seekval1= (TextView)findViewById(R.id.seekText1);
-        moomin = (SeekBar)findViewById(R.id.seekBarMU);
+        seekValue = (TextView) findViewById(R.id.seekText);
+        moomin = (SeekBar) findViewById(R.id.seekBarMU);
         moomin.setOnSeekBarChangeListener(seekBarChangeListener); // 받아들인 값을 moomin 시크바에 적용시킴
-        Q1 = (TextView)findViewById(R.id.Q1);
+        textViewQuestion = (TextView) findViewById(R.id.textViewQuestion);
         Intent intent = getIntent();
 
-        que1 = intent.getStringExtra("question");
-/*
+        questionNum = intent.getStringExtra("questionNum");
+        question = intent.getStringExtra("question");
 
-        que1 = intent.getExtras().getString("que1");
-        que2 = intent.getExtras().getString("que2");
-        que3 = intent.getExtras().getString("que3");
-        que4 = intent.getExtras().getString("que4");
-        que5 = intent.getExtras().getString("que5");
-*/
-
-        Q1.setText(que1);
+        textViewQuestion.setText(question);
     }
 
     // 시크바의 체인지리스너 매개함수? 생성..
-    private SeekBar.OnSeekBarChangeListener seekBarChangeListener = new SeekBar.OnSeekBarChangeListener(){
+    private SeekBar.OnSeekBarChangeListener seekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
 
         // 프로그레스바가 움직일 때 작동하는 함수
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             progress = moomin.getProgress();
-            if(progress<20)
+            if (progress < 20)
                 moomin.setThumb(getResources().getDrawable(R.drawable.sad2));
-            else if(progress<40)
+            else if (progress < 40)
                 moomin.setThumb(getResources().getDrawable(R.drawable.sad));
-            else if(progress>60 && progress<=80)
+            else if (progress > 60 && progress <= 80)
                 moomin.setThumb(getResources().getDrawable(R.drawable.happy));
-            else if(progress>80)
+            else if (progress > 80)
                 moomin.setThumb(getResources().getDrawable(R.drawable.happy2));
             else
                 moomin.setThumb(getResources().getDrawable(R.drawable.mu));
-            Log.e("nothing - - ", "onStartTrackingTouch: "+progress);
-            seekval1.setText(""+progress);
-            Value1=progress;
+            Log.e("nothing - - ", "onStartTrackingTouch: " + progress);
+            seekValue.setText("" + progress);
+            value = progress;
 
             // view가 시크바의 thumb 따라다니게 만드는 함수
-            int padding= moomin.getPaddingLeft() + moomin.getPaddingRight();
+            int padding = moomin.getPaddingLeft() + moomin.getPaddingRight();
             int sPos = moomin.getLeft() + moomin.getPaddingLeft();
-            int xPos = (moomin.getWidth()-padding) * moomin.getProgress() / moomin.getMax() + sPos - (seekval1.getWidth()/2);
-            seekval1.setX(xPos);
-            answer1 = progress;
+            int xPos = (moomin.getWidth() - padding) * moomin.getProgress() / moomin.getMax() + sPos - (seekValue.getWidth() / 2);
+            seekValue.setX(xPos);
+            answer = progress;
         }
 
         // 프로그레스바를 눌릴 때 작동하는 함수
@@ -86,21 +91,73 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 }
             });
+
+            final FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+            final DatabaseReference databaseReference = firebaseDatabase.getReference();
+
+            // reference https://stack07142.tistory.com/282
+
+            // START Analyze(전체 질문에 대한 분석값들)의 데이터 받기
+            // 다시 수신할 때 Single ValueEventListener는 더 이상 동작하지 않음을 알 수 있습니다.
+            databaseReference.child("Analyze").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    String target_id = null;
+                    int target_answer = 0;
+
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) { // 자식(데이터(질문에 대한))이 있다면 계속 반복 반환
+
+                        Analyze analyze = snapshot.getValue(Analyze.class); // 만족하는 if값이 나올때까지 계속 반복
+
+                        if (analyze.que_num == Integer.valueOf(questionNum)) { // 현재 클라이언트가 받은 질문에 대한 번호와 일치하는 analze가 있다면
+
+                            target_id = snapshot.getKey(); // 파이어베이스의 클래스 키 값
+                            target_answer = analyze.total_value; // 토탈 벨류는 일단 따로 저장해 놓는다
+
+                            // START getTime
+                            long now = System.currentTimeMillis();
+                            Date date = new Date(now + (3 * (60 * (60 * 1000)))); // set to finland summer time
+                            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm-dd/MM/yy");
+                            getTime = sdf.format(date);
+                            Log.d("현재 시각", getTime);
+                            // END getTime
+
+                            break;
+                        }
+                    }
+
+                    // count answers
+                    String data = dataSnapshot.child(target_id).child("count").getValue().toString();
+                    int count = Integer.valueOf(data);
+                    count++;
+
+                    // START PUSH
+                    EachValue eachValue = new EachValue();
+                    eachValue.sentTime = getTime;
+                    eachValue.value = value;
+                    databaseReference.child("Analyze").child(target_id).child("total_value").setValue(value + target_answer);
+                    databaseReference.child("Analyze").child(target_id).child("count").setValue(count);
+                    databaseReference.child("Analyze").child(target_id).child("EachValue").push().setValue(eachValue);
+                    // END PUSH
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+            // END Analyze(전체 질문에 대한 분석값들)의 데이터 받기
+
             Handler delayHandler = new Handler();
             delayHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Intent next_intent = new Intent(getBaseContext(), TwoActivity.class);
-                    next_intent.putExtra("que2", que2);
-                    next_intent.putExtra("que3", que3);
-                    next_intent.putExtra("que4", que4);
-                    next_intent.putExtra("que5", que5);
-                    next_intent.putExtra("ans1", answer1);
-                    startActivity(next_intent);
-                    overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
+                    Intent intent = new Intent(getApplicationContext(), FeedbackActivity.class);
+                    startActivity(intent);
                 }
             }, 2000);
-
         }
     };
 

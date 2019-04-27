@@ -35,16 +35,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String question;
         long now;
 
-        validTime = Long.parseLong(remoteMessage.getData().get("validTime")); // long 타입의 변수로 데이터를 받음
-        limitTime = System.currentTimeMillis() + (validTime * 1000); // 현재 시간에 validTime초를 더해준 제한시간 변수를 설정.
+        validTime = Long.parseLong(remoteMessage.getData().get("validTime")); // get long type data  long 타입의 변수로 데이터를 받음
+        limitTime = System.currentTimeMillis() + (validTime * 1000); // set variable of limit time that is added validTime and current time 현재 시간에 validTime초를 더해준 제한시간 변수를 설정.
         //now = (int)limitTime/(1000*60)+(int)limitTime/(1000*60*60*60);//파이어베이스에서 받고 서버에서 나타낼때 now/60
         //Log.d( "now: ",String.valueOf(now));
         intent = new Intent(getApplicationContext(), MainActivity.class);
         //intent.putExtra("now",now);
 
 
-        questionNum = remoteMessage.getData().get("questionNum"); // 질문 번호 데이터
-        question = remoteMessage.getData().get("question"); // 질문 데이터
+        questionNum = remoteMessage.getData().get("questionNum"); // data of question number 질문 번호 데이터
+        question = remoteMessage.getData().get("question"); // data of questions 질문 데이터
 
         /**
          * if you want to change how to start app
@@ -69,6 +69,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         //Log.i(TAG, "onMessageReceived: "+remoteMessage.getNotification().getBody());
 
         // START BroadCast
+        /** make broadcast **/
+        /** 1. create intent that is stored message to send
+         * 2. put key, value to be able to make sure whether it may receive data well or not
+         * 3. put intent to send to using 'sendBroadcast(intent);' method and broadcast */
         /** 브로드 캐스트를 발생시킨다. **/
         /** 1. 전달할 메세지를 담은 인텐트 생성
          * 2. DATA를 잘 전달받는지 확인할 수 있게 Key, value 넣기
@@ -134,7 +138,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         .setAutoCancel(true)
                         //.setSound(defaultSoundUri)
                         .setContentIntent(pendingIntent)
-                        .setTimeoutAfter(validTime * 1000); // validTime 지난 후 알림제거
+                        .setTimeoutAfter(validTime * 1000); // remove alert after validTime   validTime 지난 후 알림제거
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -197,7 +201,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private void handleNow(long limitTime, String questionNum, String question) {
         Log.d(TAG, "Short lived task is done.");
 
-        intent = new Intent(this, IntroActivity.class); // 알림탭 눌렀을 시 데이터를 받아서 이 클래스로 이동
+        intent = new Intent(this, IntroActivity.class); // move to this class when touch the noticebar   알림탭 눌렀을 시 데이터를 받아서 이 클래스로 이동
 
         intent.putExtra("limitTime",String.valueOf(limitTime));
         intent.putExtra("questionNum",questionNum);

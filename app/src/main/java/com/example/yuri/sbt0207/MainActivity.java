@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         seekValue = (TextView) findViewById(R.id.seekText);
         moomin = (SeekBar) findViewById(R.id.seekBarMU);
-        moomin.setOnSeekBarChangeListener(seekBarChangeListener); // 받아들인 값을 moomin 시크바에 적용시킴
+        moomin.setOnSeekBarChangeListener(seekBarChangeListener); // apply received value to moomin seekbar  받아들인 값을 moomin 시크바에 적용시킴
         textViewQuestion = (TextView) findViewById(R.id.textViewQuestion);
         Intent intent = getIntent();
 
@@ -47,10 +47,10 @@ public class MainActivity extends AppCompatActivity {
         textViewQuestion.setText(question);
     }
 
-    // 시크바의 체인지리스너 매개함수? 생성..
+    // create.. changeListener function of seekbar? 시크바의 체인지리스너 매개함수? 생성..
     private SeekBar.OnSeekBarChangeListener seekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
 
-        // 프로그레스바가 움직일 때 작동하는 함수
+        // working function when moving progressbar 프로그레스바가 움직일 때 작동하는 함수
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             progress = moomin.getProgress();
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
             seekValue.setText("" + progress);
             value = progress;
 
-            // view가 시크바의 thumb 따라다니게 만드는 함수
+            // working function that view follows thumb of seekbar  view가 시크바의 thumb 따라다니게 만드는 함수
             int padding = moomin.getPaddingLeft() + moomin.getPaddingRight();
             int sPos = moomin.getLeft() + moomin.getPaddingLeft();
             int xPos = (moomin.getWidth() - padding) * moomin.getProgress() / moomin.getMax() + sPos - (seekValue.getWidth() / 2);
@@ -76,13 +76,13 @@ public class MainActivity extends AppCompatActivity {
             answer = progress;
         }
 
-        // 프로그레스바를 눌릴 때 작동하는 함수
+        // working function when you touch progressbar 프로그레스바를 눌릴 때 작동하는 함수
         @Override
         public void onStartTrackingTouch(SeekBar seekBar) {
 
         }
 
-        // 프로그레스바를 떼고 작동하는 함수
+        // working function when your fingers up from monitor 프로그레스바를 떼고 작동하는 함수
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
             seekBar.setOnTouchListener(new View.OnTouchListener() {
@@ -97,8 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
             // reference https://stack07142.tistory.com/282
 
-            // START Analyze(전체 질문에 대한 분석값들)의 데이터 받기
-            // 다시 수신할 때 Single ValueEventListener는 더 이상 동작하지 않음을 알 수 있습니다.
+            // START get data of Analyze that is analyzed value of whole questions   START Analyze(전체 질문에 대한 분석값들)의 데이터 받기
             databaseReference.child("Analyze").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -106,14 +105,14 @@ public class MainActivity extends AppCompatActivity {
                     String target_id = null;
                     int target_answer = 0;
 
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) { // 자식(데이터(질문에 대한))이 있다면 계속 반복 반환
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) { // if there are children data of questions, keep to repeat returning 자식(데이터(질문에 대한))이 있다면 계속 반복 반환
 
-                        Analyze analyze = snapshot.getValue(Analyze.class); // 만족하는 if값이 나올때까지 계속 반복
+                        Analyze analyze = snapshot.getValue(Analyze.class); // keep to repeat until finding satisfying if value   만족하는 if값이 나올때까지 계속 반복
 
-                        if (analyze.que_num == Integer.valueOf(questionNum)) { // 현재 클라이언트가 받은 질문에 대한 번호와 일치하는 analze가 있다면
+                        if (analyze.que_num == Integer.valueOf(questionNum)) { // if current client receives matched analyze for number about questions 현재 클라이언트가 받은 질문에 대한 번호와 일치하는 analyze가 있다면
 
-                            target_id = snapshot.getKey(); // 파이어베이스의 클래스 키 값
-                            target_answer = analyze.total_value; // 토탈 벨류는 일단 따로 저장해 놓는다
+                            target_id = snapshot.getKey(); // key value of firebase 파이어베이스의 클래스 키 값
+                            target_answer = analyze.total_value; // save total_value temporarily 토탈 벨류는 일단 따로 저장해 놓는다
 
                             // START getTime
                             long now = System.currentTimeMillis();
@@ -148,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             });
-            // END Analyze(전체 질문에 대한 분석값들)의 데이터 받기
+            // END get data of Analyze that is analyzed value of whole questions   END Analyze(전체 질문에 대한 분석값들)의 데이터 받기
 
             Handler delayHandler = new Handler();
             delayHandler.postDelayed(new Runnable() {

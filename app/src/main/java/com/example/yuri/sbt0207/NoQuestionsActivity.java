@@ -9,7 +9,7 @@ import android.os.Bundle;
 
 public class NoQuestionsActivity extends AppCompatActivity implements Runnable{
 
-    private final String BROADCAST_MESSAGE = "sbt.noQuestions"; // 브로드캐스트 주소
+    private final String BROADCAST_MESSAGE = "sbt.noQuestions"; // address of broadcast 브로드캐스트 주소
     private BroadcastReceiver mReceiver = null;
     private long limitTime;
     private String questionNum;
@@ -35,8 +35,14 @@ public class NoQuestionsActivity extends AppCompatActivity implements Runnable{
     }
 
     NoQuestionsActivity that = this;
+    /** register broadcast automatically in code **/
     /** 동적으로(코드상으로) 브로드 캐스트를 등록한다. **/
     private void registerReceiver(){
+        /** 1. make intent filter
+         *  2. add action into intent filter
+         *  3. implement BroadCastReceiver anonymous class
+         *  4. register intent filter and BroadCastReceiver
+         * */
         /** 1. intent filter를 만든다
          *  2. intent filter에 action을 추가한다.
          *  3. BroadCastReceiver를 익명클래스로 구현한다.
@@ -49,13 +55,14 @@ public class NoQuestionsActivity extends AppCompatActivity implements Runnable{
 
         this.mReceiver = new BroadcastReceiver() {
             @Override
-            public void onReceive(Context context, Intent intent) { // 송신자가 보낸 주소와 일치하던 안하던 브로드캐스트는 받는 듯
+            public void onReceive(Context context, Intent intent) { // I think it receives broadcast whether correct address to sender or not 송신자가 보낸 주소와 일치하던 안하던 브로드캐스트는 받는 듯
 
-                if(intent.getAction().equals(BROADCAST_MESSAGE)){ // 송신자가 보낸 주소와 이 클래스의 주소가 일치하면 함수 실행
+                if(intent.getAction().equals(BROADCAST_MESSAGE)){ // if it is correct address of this class with address to sender, start this method 송신자가 보낸 주소와 이 클래스의 주소가 일치하면 함수 실행
                     limitTime = Long.parseLong(intent.getStringExtra("limitTime"));
                     questionNum = intent.getStringExtra("questionNum");
                     question = intent.getStringExtra("question");
-                    (new Thread(that)).start(); // that선언 registerReceiver 위에 객체 있음. that은 NoQuestionsActivity.this 와 같음.
+                    (new Thread(that)).start(); // declaring that. objects are above of registerReceiver. that is same with NoQuestionsActivity.this
+                    // that선언 registerReceiver 위에 객체 있음. that은 NoQuestionsActivity.this 와 같음.
                 }
             }
         };
@@ -64,6 +71,7 @@ public class NoQuestionsActivity extends AppCompatActivity implements Runnable{
 
     }
 
+    /** end broadcast automatically in code **/
     /** 동적으로(코드상으로) 브로드 캐스트를 종료한다. **/
     private void unregisterReceiver() {
         if(mReceiver != null){
@@ -79,7 +87,7 @@ public class NoQuestionsActivity extends AppCompatActivity implements Runnable{
 
         long now = System.currentTimeMillis();
 
-        if (limitTime > now) { // 데이터가 있으면
+        if (limitTime > now) { // if there is data, 데이터가 있으면
 
             intent = new Intent(getApplicationContext(), MainActivity.class);
 
@@ -87,7 +95,7 @@ public class NoQuestionsActivity extends AppCompatActivity implements Runnable{
             intent.putExtra("question",question);
 
             startActivity(intent);
-        } else { // 아무일도 없음
+        } else { // there is nothing 아무일도 없음
 
         }
         finish();

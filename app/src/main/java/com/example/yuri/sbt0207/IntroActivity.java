@@ -32,7 +32,6 @@ public class IntroActivity extends Activity {
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference databaseReference = firebaseDatabase.getReference();
     public SharedPreferences prefs;
-    public CountDownTimer mCountDown;
     long count = 0;
     long delayTime = 2000;
     private String questionNum;
@@ -46,8 +45,6 @@ public class IntroActivity extends Activity {
         setContentView(R.layout.intro_activity);
 
         intent = getIntent();
-        final FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-        final List<String> q_parametersList = new ArrayList<>();
         prefs = getSharedPreferences("isFirstRun", MODE_PRIVATE);
         Handler handler = new Handler();
 
@@ -56,7 +53,7 @@ public class IntroActivity extends Activity {
          * if you want to change how to start app
          * you can use this way
          */
-        /*
+/*
         // START Get DataFromBackground
         // 앱 위젯을 통해 어플로 접근 했을 시 데이터 삽입 방법
         // 저장된 값(valid)을 백그라운드에서 불러오기 위해 같은 네임파일을 찾음.
@@ -70,7 +67,7 @@ public class IntroActivity extends Activity {
         question = sharedPreferences.getString("question", "");
         questionNum = "a@"+questionNum;
         // END Get DataFromBackground
-        */
+*/
 
         // START FCM PUSH
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -112,14 +109,15 @@ public class IntroActivity extends Activity {
                         }
 
                         // Get new Instance ID token
-                        boolean isFirstRun = prefs.getBoolean("isFirstRun", true);//처음실행할때만 데이터 전달
+                        boolean isFirstRun = prefs.getBoolean("isFirstRun", true); // transfer data only when app is executed first time 처음실행할때만 데이터 전달
                         if (isFirstRun) {
                             String token = task.getResult().getToken();
                             Log.d(TAG, "GETTOKEN : " + token);
-                            databaseReference.child("gettoken").push().setValue(token);//토큰 값 파이어베이스에 푸시
+                            databaseReference.child("gettoken").push().setValue(token); // push token value into firebase 토큰 값 파이어베이스에 푸시
                             SharedPreferences.Editor editor = prefs.edit();
-                            editor.putBoolean("isFirstRun",false); // false로 저장함으로써 다시는 이 if 문에 들어오지 못하게 한다.
-                            editor.commit();//한번 푸시 한 이후로 다시 푸시안함 -> 삭제 후 재 다운로드(토큰값 변경)시 다시 토큰값 푸시
+                            editor.putBoolean("isFirstRun",false); // save putBoolean for false so that it can forbid to enter here   false로 저장함으로써 다시는 이 if 문에 들어오지 못하게 한다.
+                            editor.commit(); // once push data, it never push again -> if you want to push data again, delete app and install it. when your token value is changed
+                            // 한번 푸시 한 이후로 다시 푸시안함 -> 삭제 후 재 다운로드(토큰값 변경)시 다시 토큰값 푸시
                         }
                     }
                 });
@@ -132,13 +130,13 @@ public class IntroActivity extends Activity {
             @Override
             public void run() {
 
-                if (intent.getStringExtra("limitTime") != null) {// limitTime에 빈 값이 있는지 없는지 체크하고 변수 삽입.
+                if (intent.getStringExtra("limitTime") != null) { // put variable after check whether exist empty value at limitTime   limitTime에 빈 값이 있는지 없는지 체크하고 변수 삽입.
                     limitTime = Long.parseLong(intent.getStringExtra("limitTime"));
                     Log.e( "runnnnnn: ",String.valueOf(limitTime));
                 }
                 long now = System.currentTimeMillis();
 
-                if (limitTime > now) { // 데이터가 있으면
+                if (limitTime > now) { // if there is data, 데이터가 있으면,
 
                     /**
                      * if you want to change how to start app
@@ -166,7 +164,7 @@ public class IntroActivity extends Activity {
                 finish();
             }
 
-        }, delayTime + count); // 2초 뒤에 Runner객체 실행하도록 함
+        }, delayTime + count); // start Runner object in 2 seconds  2초 뒤에 Runner객체 실행하도록 함
 
 
     }

@@ -19,7 +19,7 @@ public class FeedbackActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feedback);
 
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE); // text뷰가 키보드 레이아웃에 의해 가려질 때 조절할 수 있는 명령어
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE); // it's command to be able to adjust when textview is hidden by keyboard layout   text뷰가 키보드 레이아웃에 의해 가려질 때 조절할 수 있는 명령어
 
         edit = (EditText)findViewById(R.id.editText);
         Button sendbtn = (Button)findViewById(R.id.sendBtn);

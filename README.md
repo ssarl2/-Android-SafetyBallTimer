@@ -1,3 +1,13 @@
+# 04.09.19 development plans
+
+### To do list until this week<br>
+<ul>
+<li>I'm thinking What does it need for this.</li>
+<li>Understand this again.</li>  
+</ul>
+
+---------------------------------------------------------------------------------------
+
 # 25.03.19 development meeting
 
 ### To do list until this week<br>

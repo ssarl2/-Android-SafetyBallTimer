@@ -1,4 +1,4 @@
-# 30.09.19 fixed applications
+# 30.09.19 fixed the application
 
 ### Fixed list<br>
 <ul>

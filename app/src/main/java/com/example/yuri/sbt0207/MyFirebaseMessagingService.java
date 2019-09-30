@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -15,10 +16,14 @@ import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "MyFirebaseMsgService";
+
     private Intent intent;
+
+    private SharedPreferences sharedPreferences;
 
     /**
      * Called when message is received.
@@ -31,42 +36,24 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         long validTime;
         long limitTime;
+//        long now;
+
         String questionNum;
         String question;
-        long now;
 
         validTime = Long.parseLong(remoteMessage.getData().get("validTime")); // get long type data  long 타입의 변수로 데이터를 받음
         limitTime = System.currentTimeMillis() + (validTime * 1000); // set variable of limit time that is added validTime and current time 현재 시간에 validTime초를 더해준 제한시간 변수를 설정.
-        //now = (int)limitTime/(1000*60)+(int)limitTime/(1000*60*60*60);//파이어베이스에서 받고 서버에서 나타낼때 now/60
-        //Log.d( "now: ",String.valueOf(now));
+//        now = (int)limitTime/(1000*60)+(int)limitTime/(1000*60*60*60);//파이어베이스에서 받고 서버에서 나타낼때 now/60
         intent = new Intent(getApplicationContext(), MainActivity.class);
-        //intent.putExtra("now",now);
-
+//        intent.putExtra("now",now);
 
         questionNum = remoteMessage.getData().get("questionNum"); // data of question number 질문 번호 데이터
         question = remoteMessage.getData().get("question"); // data of questions 질문 데이터
 
-        /**
-         * if you want to change how to start app
-         * you can use this way
-         */
-        /*
-        // START save data to backGround
-        SharedPreferences sharedPreferences = getSharedPreferences("backgroundData",MODE_PRIVATE); //SharedPreferences를 기본모드로 설정
-        SharedPreferences.Editor editor = sharedPreferences.edit(); //저장을 하기위해 editor를 이용하여 값을 저장시켜준다.
 
-        editor.putString("limitTime",String.valueOf(limitTime));
-        editor.putString("questionNum",questionNum);
-        editor.putString("question",question);
+        SavingData(limitTime, questionNum, question);
 
-        editor.commit();
-        // END save data to backGround
-        */
 
-        Log.i(TAG, "onMessageReceived:queNum " + remoteMessage.getData().get("questionNum"));
-        Log.i(TAG, "onMessageReceived:que " + remoteMessage.getData().get("question"));
-        Log.i(TAG, "onMessageReceived:val " + remoteMessage.getData().get("validTime"));
-        //Log.i(TAG, "onMessageReceived: "+remoteMessage.getNotification().getBody());
 
         // START BroadCast
         /** make broadcast **/
@@ -77,14 +64,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         /** 1. 전달할 메세지를 담은 인텐트 생성
          * 2. DATA를 잘 전달받는지 확인할 수 있게 Key, value 넣기
          * 3. sendBroadcast(intent); 메서드를 이용해서 전달할 intent를 넣고, 브로드캐스트한다. */
-
         intent = new Intent("sbt.noQuestions");
-        intent.putExtra("limitTime",String.valueOf(limitTime));
-        Log.e("limittttttttt: ",String.valueOf(limitTime));
+        intent.putExtra("limitTime", String.valueOf(limitTime));
         intent.putExtra("questionNum", questionNum);
         intent.putExtra("question", question);
         sendBroadcast(intent);
         // END BroadCast
+
+
 
         // TODO(developer): Handle FCM messages here.
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
@@ -97,9 +84,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             if (/* Check if data needs to be processed by long running job */ false) {
                 // For long-running tasks (10 seconds or more) use Firebase Job Dispatcher.
                 //scheduleJob();
+
             } else {
                 // Handle message within 10 seconds
-                handleNow(limitTime, questionNum, question);
+                // handleNow(limitTime, questionNum, question); // It's disposed
             }
 
         }
@@ -111,7 +99,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
-        sendNotification(validTime, limitTime, questionNum, question); // 알림탭에 관한 알림함수 실행
+
+        // This is for dividing between when the Background Notification is appearing
+        // and this app is being executing
+        if(sharedPreferences.getBoolean("CHECK",true)) {
+            sendNotification(validTime, limitTime, questionNum, question); // 알림탭에 관한 알림함수 실행
+        }
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("CHECK",true);
+        editor.commit();
     }
     // [END receive_message]
 
@@ -158,9 +154,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         //vib.vibrate(1500);
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
-
-
     }
+
+
+
 
     // [START on_new_token]
 
@@ -180,6 +177,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
     // [END on_new_token]
 
+
+
+
     // [START dispatch_job]
     /**
      * Schedule a job using FirebaseJobDispatcher.
@@ -195,10 +195,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     // [END dispatch_job]
 
 
+
+
+
     /**
      * Handle time allotted to BroadcastReceivers.
      */
-    private void handleNow(long limitTime, String questionNum, String question) {
+    private boolean handleNow(long limitTime, String questionNum, String question) {
         Log.d(TAG, "Short lived task is done.");
 
         intent = new Intent(this, IntroActivity.class); // move to this class when touch the noticebar   알림탭 눌렀을 시 데이터를 받아서 이 클래스로 이동
@@ -207,8 +210,30 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         intent.putExtra("questionNum",questionNum);
         intent.putExtra("question",question);
         Log.e(TAG, "handleNowwwwww: " );
-        startActivity(intent);
+        startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+
+        return false;
     }
+
+
+
+
+    // START save data to backGround
+    void SavingData(long limitTime, String questionNum, String question){
+        SharedPreferences sharedPreferences = getSharedPreferences("backgroundData",MODE_PRIVATE); //SharedPreferences를 기본모드로 설정
+        SharedPreferences.Editor editor = sharedPreferences.edit(); //저장을 하기위해 editor를 이용하여 값을 저장시켜준다.
+
+        editor.putString("limitTime",String.valueOf(limitTime));
+        editor.putString("questionNum",questionNum);
+        editor.putString("question",question);
+
+        editor.commit();
+    }
+    // END save data to backGround
+
+
+
+
 
     /**
      * Persist token to third-party servers.
@@ -230,15 +255,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        // This is for dividing between when the Background Notification is appearing
+        // and this app is being executing
+        sharedPreferences = getSharedPreferences("NoQuestionsActivityIsAlive", MODE_PRIVATE);
         Log.d(getClass().getSimpleName(), "OnCreate");
-
     }
-
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         Log.d(getClass().getSimpleName(), "OnDestroy");
-
     }
+
 }

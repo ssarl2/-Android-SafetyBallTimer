@@ -4,8 +4,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 public class NoQuestionsActivity extends AppCompatActivity implements Runnable{
 
@@ -14,6 +17,13 @@ public class NoQuestionsActivity extends AppCompatActivity implements Runnable{
     private long limitTime;
     private String questionNum;
     private String question;
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // In order to exit app exactly when you go to home or elsewhere
+        ActivityCompat.finishAffinity(NoQuestionsActivity.this);
+    }
 
     @Override
     protected void onResume() {
@@ -32,6 +42,15 @@ public class NoQuestionsActivity extends AppCompatActivity implements Runnable{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_no_questions);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("NoQuestionsActivityIsAlive", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putBoolean("CHECK",false);
+
+        //최종 커밋
+        editor.commit();
+        Log.d( "NoQuestionActivity: ","실행 중");
     }
 
     NoQuestionsActivity that = this;
@@ -50,8 +69,8 @@ public class NoQuestionsActivity extends AppCompatActivity implements Runnable{
          * */
         if(mReceiver != null) return;
 
-        final IntentFilter theFilter = new IntentFilter();
-        theFilter.addAction(BROADCAST_MESSAGE);
+        final IntentFilter theFilter = new IntentFilter(BROADCAST_MESSAGE);
+//        theFilter.addAction(BROADCAST_MESSAGE);
 
         this.mReceiver = new BroadcastReceiver() {
             @Override

@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -20,8 +19,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class IntroActivity extends Activity {
@@ -32,12 +29,16 @@ public class IntroActivity extends Activity {
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference databaseReference = firebaseDatabase.getReference();
     public SharedPreferences prefs;
+    
     long count = 0;
     long delayTime = 2000;
+    
     private String questionNum;
     private String question;
-    private Intent intent;
+
     private long limitTime = 0;
+    
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,30 +46,14 @@ public class IntroActivity extends Activity {
         setContentView(R.layout.intro_activity);
 
         intent = getIntent();
+        
         prefs = getSharedPreferences("isFirstRun", MODE_PRIVATE);
+        
         Handler handler = new Handler();
 
 
-        /**
-         * if you want to change how to start app
-         * you can use this way
-         */
-/*
-        // START Get DataFromBackground
-        // 앱 위젯을 통해 어플로 접근 했을 시 데이터 삽입 방법
-        // 저장된 값(valid)을 백그라운드에서 불러오기 위해 같은 네임파일을 찾음.
-        SharedPreferences sharedPreferences = getSharedPreferences("backgroundData", MODE_PRIVATE);
-        limitTime = Long.parseLong(sharedPreferences.getString("limitTime", "0"));
-
-        SharedPreferences.Editor editor = sharedPreferences.edit(); // 설문조사를 끝나고 다시 들어갈 수 있는 것을 방지하기 위해 제한시간 초기화
-        editor.putString("limitTime",String.valueOf(limitTime));
-
-        questionNum = sharedPreferences.getString("questionNum", "");
-        question = sharedPreferences.getString("question", "");
-        questionNum = "a@"+questionNum;
-        // END Get DataFromBackground
-*/
-
+        
+        
         // START FCM PUSH
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // Create channel to show notifications.
@@ -78,8 +63,9 @@ public class IntroActivity extends Activity {
                     getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(new NotificationChannel(channelId,
                     channelName, NotificationManager.IMPORTANCE_LOW));
+            notificationManager.cancelAll(); // Remove the notification as you start this app
         }
-
+        
         // If a notification message is tapped, any data accompanying the notification
         // message is available in the intent extras. In this sample the launcher
         // intent is fired when the notification is tapped, so any accompanying data would
@@ -110,9 +96,12 @@ public class IntroActivity extends Activity {
 
                         // Get new Instance ID token
                         boolean isFirstRun = prefs.getBoolean("isFirstRun", true); // transfer data only when app is executed first time 처음실행할때만 데이터 전달
+                        String token = task.getResult().getToken();
+
+                        String msg = getString(R.string.msg_token_fmt, token);
+                        Log.d(TAG, msg); // log value of the token 토큰 값 출력
+
                         if (isFirstRun) {
-                            String token = task.getResult().getToken();
-                            Log.d(TAG, "GETTOKEN : " + token);
                             databaseReference.child("gettoken").push().setValue(token); // push token value into firebase 토큰 값 파이어베이스에 푸시
                             SharedPreferences.Editor editor = prefs.edit();
                             editor.putBoolean("isFirstRun",false); // save putBoolean for false so that it can forbid to enter here   false로 저장함으로써 다시는 이 if 문에 들어오지 못하게 한다.
@@ -126,30 +115,23 @@ public class IntroActivity extends Activity {
 
         // END FCM PUSH
 
+        
+        
+        
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
+                TossData();
+//                if (intent.getStringExtra("limitTime") != null) { // put variable after check whether exist empty value at limitTime   limitTime에 빈 값이 있는지 없는지 체크하고 변수 삽입.
+//                    limitTime = Long.parseLong(intent.getStringExtra("limitTime"));
+//                }
 
-                if (intent.getStringExtra("limitTime") != null) { // put variable after check whether exist empty value at limitTime   limitTime에 빈 값이 있는지 없는지 체크하고 변수 삽입.
-                    limitTime = Long.parseLong(intent.getStringExtra("limitTime"));
-                    Log.e( "runnnnnn: ",String.valueOf(limitTime));
-                }
                 long now = System.currentTimeMillis();
-
+                Log.d("run: limitTime",limitTime+" :: "+now);
                 if (limitTime > now) { // if there is data, 데이터가 있으면,
-
-                    /**
-                     * if you want to change how to start app
-                     * you can use this way
-                     */
-                    /*
-                    if (questionNum.split("@")[0].equals("a")) { // 앱 위젯을 통해 들어왔을시 데이터 넣는 방법
-                        questionNum = questionNum.split("@")[1];
-                    } else { // 알림창을 통해 들어왔을시 데이터 넣는 방법
-                    */
-                        questionNum = intent.getStringExtra("questionNum");
-                        question = intent.getStringExtra("question");
-                    // }
+                    Log.d(TAG, "run: 여기 실행합니까??");
+//                    questionNum = intent.getStringExtra("questionNum");
+//                    question = intent.getStringExtra("question");
 
                     intent = new Intent(getApplicationContext(), MainActivity.class);
 
@@ -158,6 +140,7 @@ public class IntroActivity extends Activity {
 
                     startActivity(intent);
                 } else {
+                    Log.d(TAG, "run: 여기 어때요???");
                     intent = new Intent(getApplicationContext(), NoQuestionsActivity.class);
                     startActivity(intent);
                 }
@@ -165,7 +148,6 @@ public class IntroActivity extends Activity {
             }
 
         }, delayTime + count); // start Runner object in 2 seconds  2초 뒤에 Runner객체 실행하도록 함
-
 
     }
     // END onCreate
@@ -175,6 +157,22 @@ public class IntroActivity extends Activity {
         super.onPause();
         finish();
     }
+
+    // START Get DataFromBackground
+    // 앱 위젯을 통해 어플로 접근 했을 시 데이터 삽입 방법
+    // 저장된 값(valid)을 백그라운드에서 불러오기 위해 같은 네임파일을 찾음.
+    void TossData(){
+        SharedPreferences sharedPreferences = getSharedPreferences("backgroundData", MODE_PRIVATE);
+        limitTime = Long.parseLong(sharedPreferences.getString("limitTime", "0"));
+        Log.d(TAG, "TossData: ");
+        SharedPreferences.Editor editor = sharedPreferences.edit(); // 설문조사를 끝나고 다시 들어갈 수 있는 것을 방지하기 위해 제한시간 초기화
+        editor.putString("limitTime",String.valueOf(limitTime));
+
+        questionNum = sharedPreferences.getString("questionNum", "");
+        question = sharedPreferences.getString("question", "");
+//        questionNum = "a@"+questionNum;
+    }
+    // END Get DataFromBackground
 }
 
 

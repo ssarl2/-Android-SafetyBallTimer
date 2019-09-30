@@ -1,6 +1,7 @@
 package com.example.yuri.sbt0207;
 
 import android.content.Intent;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -13,6 +14,16 @@ import com.google.firebase.database.FirebaseDatabase;
 public class FeedbackActivity extends AppCompatActivity {
     EditText edit;
     String feedbackval;
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // In order to exit app exactly when you go to home or elsewhere
+        ActivityCompat.finishAffinity(FeedbackActivity.this);
+        System.runFinalizersOnExit(true);
+        System.exit(0);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 

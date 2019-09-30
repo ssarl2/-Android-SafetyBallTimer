@@ -1,3 +1,14 @@
+# 30.09.19 fixed applications
+
+### Fixed list<br>
+<ul>
+<li></li>
+<li></li>
+<li></li>
+</ul>
+
+---------------------------------------------------------------------------------------
+
 # 04.09.19 development plans
 
 ### To do list until this week<br>

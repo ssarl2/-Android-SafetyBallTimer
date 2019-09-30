@@ -2,9 +2,9 @@
 
 ### Fixed list<br>
 <ul>
-<li></li>
-<li></li>
-<li></li>
+<li>Changed what this app executes in automatic to manual</li>
+<li>Fixed that app doesn't work when there is remaining process after app goes onto background</li>
+<li>Fixed what notifications don't disappear as app starts or exit</li>
 </ul>
 
 ---------------------------------------------------------------------------------------

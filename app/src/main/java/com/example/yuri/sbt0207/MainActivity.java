@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.example.yuri.sbt0207.Object.Analyze;
+import com.example.yuri.sbt0207.Object.EachValue;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,26 +24,29 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
-    private TextView seekValue;
-    private SeekBar moomin;
-    private TextView textViewQuestion;
+
+    TextView seekValue;
+    TextView textViewQuestion;
+
+    SeekBar moomin;
+
     String question;
-    String questionNum;
+    String getTime;
+
     int value;
     int answer;
-    String getTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         seekValue = (TextView) findViewById(R.id.seekText);
         moomin = (SeekBar) findViewById(R.id.seekBarMU);
         moomin.setOnSeekBarChangeListener(seekBarChangeListener); // apply received value to moomin seekbar  받아들인 값을 moomin 시크바에 적용시킴
         textViewQuestion = (TextView) findViewById(R.id.textViewQuestion);
         Intent intent = getIntent();
 
-        questionNum = intent.getStringExtra("questionNum");
         question = intent.getStringExtra("question");
 
         textViewQuestion.setText(question);
@@ -64,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
                 moomin.setThumb(getResources().getDrawable(R.drawable.happy2));
             else
                 moomin.setThumb(getResources().getDrawable(R.drawable.mu));
-            Log.e("nothing - - ", "onStartTrackingTouch: " + progress);
+
             seekValue.setText("" + progress);
             value = progress;
 
@@ -106,13 +111,12 @@ public class MainActivity extends AppCompatActivity {
                     int target_answer = 0;
 
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) { // if there are children data of questions, keep to repeat returning 자식(데이터(질문에 대한))이 있다면 계속 반복 반환
-
                         Analyze analyze = snapshot.getValue(Analyze.class); // keep to repeat until finding satisfying if value   만족하는 if값이 나올때까지 계속 반복
 
-                        if (analyze.que_num == Integer.valueOf(questionNum)) { // if current client receives matched analyze for number about questions 현재 클라이언트가 받은 질문에 대한 번호와 일치하는 analyze가 있다면
+                        if (analyze.getQuestion().equals(question)) { // if current client receives matched analyze for number about questions 현재 클라이언트가 받은 질문에 대한 번호와 일치하는 analyze가 있다면
 
                             target_id = snapshot.getKey(); // key value of firebase 파이어베이스의 클래스 키 값
-                            target_answer = analyze.total_value; // save total_value temporarily 토탈 벨류는 일단 따로 저장해 놓는다
+                            target_answer = analyze.getTotal_value(); // save total_value temporarily 토탈 벨류는 일단 따로 저장해 놓는다
 
                             // START getTime
                             long now = System.currentTimeMillis();
@@ -133,9 +137,12 @@ public class MainActivity extends AppCompatActivity {
 
                     // START PUSH
                     EachValue eachValue = new EachValue();
-                    eachValue.sentTime = getTime;
-                    eachValue.value = value;
+
+                    eachValue.setSentTime(getTime);
+                    eachValue.setValue(value);
+
                     databaseReference.child("Analyze").child(target_id).child("total_value").setValue(value + target_answer);
+                    databaseReference.child("Analyze").child(target_id).child("question").setValue(dataSnapshot.child(target_id).child("question").getValue().toString());
                     databaseReference.child("Analyze").child(target_id).child("count").setValue(count);
                     databaseReference.child("Analyze").child(target_id).child("EachValue").push().setValue(eachValue);
                     // END PUSH

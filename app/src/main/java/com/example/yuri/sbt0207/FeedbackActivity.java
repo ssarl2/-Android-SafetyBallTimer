@@ -9,11 +9,21 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class FeedbackActivity extends AppCompatActivity {
-    EditText edit;
-    String feedbackval;
+
+    EditText editText;
+
+    String feedback;
+
+    Button sendBtn;
+    Button noting;
+
+    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    DatabaseReference databaseReference = firebaseDatabase.getReference();
+
 
     @Override
     protected void onStop() {
@@ -32,25 +42,29 @@ public class FeedbackActivity extends AppCompatActivity {
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE); // it's command to be able to adjust when textview is hidden by keyboard layout   text뷰가 키보드 레이아웃에 의해 가려질 때 조절할 수 있는 명령어
 
-        edit = (EditText)findViewById(R.id.editText);
-        Button sendbtn = (Button)findViewById(R.id.sendBtn);
-        Button Noting = (Button)findViewById(R.id.Notting);
+        editText = (EditText)findViewById(R.id.editText);
+        sendBtn = (Button)findViewById(R.id.sendBtn);
+        noting = (Button)findViewById(R.id.Notting);
 
-        final FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
 
-        sendbtn.setOnClickListener(new View.OnClickListener() {
+        sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                feedback = editText.getText().toString();
+                if(feedback.isEmpty()) { // If it is empty, just skip.
+                    return;
+                }
+                databaseReference.child("Feedback").push().setValue(feedback);
+
                 Intent intent = new Intent(getBaseContext(),LastActivity.class);
-                feedbackval = edit.getText().toString();
-                mDatabase.getReference().child("Feedbacks").push().setValue(feedbackval);
 
                 startActivity(intent);
 
                 overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
             }
         });
-        Noting.setOnClickListener(new View.OnClickListener() {
+        
+        noting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getBaseContext(),LastActivity.class);

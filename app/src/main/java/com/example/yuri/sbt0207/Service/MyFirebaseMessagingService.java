@@ -1,4 +1,4 @@
-package com.example.yuri.sbt0207;
+package com.example.yuri.sbt0207.Service;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -13,6 +13,9 @@ import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.example.yuri.sbt0207.IntroActivity;
+import com.example.yuri.sbt0207.MainActivity;
+import com.example.yuri.sbt0207.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -38,7 +41,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         long limitTime;
 //        long now;
 
-        String questionNum;
         String question;
 
         validTime = Long.parseLong(remoteMessage.getData().get("validTime")); // get long type data  long 타입의 변수로 데이터를 받음
@@ -47,11 +49,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         intent = new Intent(getApplicationContext(), MainActivity.class);
 //        intent.putExtra("now",now);
 
-        questionNum = remoteMessage.getData().get("questionNum"); // data of question number 질문 번호 데이터
         question = remoteMessage.getData().get("question"); // data of questions 질문 데이터
 
 
-        SavingData(limitTime, questionNum, question);
+        SavingData(limitTime, question);
 
 
 
@@ -66,7 +67,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
          * 3. sendBroadcast(intent); 메서드를 이용해서 전달할 intent를 넣고, 브로드캐스트한다. */
         intent = new Intent("sbt.noQuestions");
         intent.putExtra("limitTime", String.valueOf(limitTime));
-        intent.putExtra("questionNum", questionNum);
         intent.putExtra("question", question);
         sendBroadcast(intent);
         // END BroadCast
@@ -103,7 +103,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // This is for dividing between when the Background Notification is appearing
         // and this app is being executing
         if(sharedPreferences.getBoolean("CHECK",true)) {
-            sendNotification(validTime, limitTime, questionNum, question); // 알림탭에 관한 알림함수 실행
+            sendNotification(validTime, limitTime, question); // 알림탭에 관한 알림함수 실행
         }
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean("CHECK",true);
@@ -113,11 +113,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
 
-    private void sendNotification(long validTime, long limitTime, String questionNum, String question) {
+    private void sendNotification(long validTime, long limitTime, String question) {
         intent = new Intent(this, IntroActivity.class); // 알림탭 눌렀을 시 데이터를 받아서 이 클래스로 이동
 
         intent.putExtra("limitTime",String.valueOf(limitTime));
-        intent.putExtra("questionNum",questionNum);
         intent.putExtra("question",question);
 
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -201,15 +200,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     /**
      * Handle time allotted to BroadcastReceivers.
      */
-    private boolean handleNow(long limitTime, String questionNum, String question) {
-        Log.d(TAG, "Short lived task is done.");
+    private boolean handleNow(long limitTime, String question) {
 
         intent = new Intent(this, IntroActivity.class); // move to this class when touch the noticebar   알림탭 눌렀을 시 데이터를 받아서 이 클래스로 이동
 
         intent.putExtra("limitTime",String.valueOf(limitTime));
-        intent.putExtra("questionNum",questionNum);
         intent.putExtra("question",question);
-        Log.e(TAG, "handleNowwwwww: " );
         startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
 
         return false;
@@ -219,12 +215,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
     // START save data to backGround
-    void SavingData(long limitTime, String questionNum, String question){
+    void SavingData(long limitTime, String question){
         SharedPreferences sharedPreferences = getSharedPreferences("backgroundData",MODE_PRIVATE); //SharedPreferences를 기본모드로 설정
         SharedPreferences.Editor editor = sharedPreferences.edit(); //저장을 하기위해 editor를 이용하여 값을 저장시켜준다.
 
         editor.putString("limitTime",String.valueOf(limitTime));
-        editor.putString("questionNum",questionNum);
         editor.putString("question",question);
 
         editor.commit();

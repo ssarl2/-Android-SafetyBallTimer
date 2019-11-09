@@ -14,41 +14,45 @@ import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
+import java.util.HashSet;
 
 
 public class IntroActivity extends Activity {
     private static final String TAG = "MyFirebaseMsgService";
     private final String BROADCAST_MESSAGE = "sbt.noQuestions"; // 브로드캐스트 주소
 
-    private BroadcastReceiver mReceiver = null;
-    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-    private DatabaseReference databaseReference = firebaseDatabase.getReference();
-    public SharedPreferences prefs;
-    
+    BroadcastReceiver mReceiver = null;
+
+    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    DatabaseReference databaseReference = firebaseDatabase.getReference();
+
     long count = 0;
     long delayTime = 2000;
     
-    private String questionNum;
-    private String question;
+    String question;
+    String token;
 
-    private long limitTime = 0;
-    
-    private Intent intent;
+    long limitTime = 0;
+
+    Intent intent;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.intro_activity);
+        setContentView(R.layout.activity_intro);
 
         intent = getIntent();
         
-        prefs = getSharedPreferences("isFirstRun", MODE_PRIVATE);
-        
+
         Handler handler = new Handler();
 
 
@@ -85,8 +89,7 @@ public class IntroActivity extends Activity {
 
         // Get token
         // [START retrieve_current_token]
-        FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                     @Override
                     public void onComplete(@NonNull Task<InstanceIdResult> task) {
                         if (!task.isSuccessful()) {
@@ -95,19 +98,32 @@ public class IntroActivity extends Activity {
                         }
 
                         // Get new Instance ID token
-                        boolean isFirstRun = prefs.getBoolean("isFirstRun", true); // transfer data only when app is executed first time 처음실행할때만 데이터 전달
-                        String token = task.getResult().getToken();
+                        token = task.getResult().getToken();
 
                         String msg = getString(R.string.msg_token_fmt, token);
                         Log.d(TAG, msg); // log value of the token 토큰 값 출력
 
-                        if (isFirstRun) {
-                            databaseReference.child("gettoken").push().setValue(token); // push token value into firebase 토큰 값 파이어베이스에 푸시
-                            SharedPreferences.Editor editor = prefs.edit();
-                            editor.putBoolean("isFirstRun",false); // save putBoolean for false so that it can forbid to enter here   false로 저장함으로써 다시는 이 if 문에 들어오지 못하게 한다.
-                            editor.commit(); // once push data, it never push again -> if you want to push data again, delete app and install it. when your token value is changed
-                            // 한번 푸시 한 이후로 다시 푸시안함 -> 삭제 후 재 다운로드(토큰값 변경)시 다시 토큰값 푸시
-                        }
+                        // If there is no token of this device in the firebase, add token to firebase
+                        databaseReference.child("getToken").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                HashSet<String> set = new HashSet<>();
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) { // execute for syntax in order to get whole data 데이터 전체를 받기위해 반복문 실행
+
+                                    String key = snapshot.getValue().toString();
+                                    set.add(key);
+                                }
+                                if(!set.contains(token)){
+                                    databaseReference.child("getToken").push().setValue(token); // push token value into firebase 토큰 값 파이어베이스에 푸시
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+
                     }
                 });
 
@@ -122,26 +138,20 @@ public class IntroActivity extends Activity {
             @Override
             public void run() {
                 TossData();
-//                if (intent.getStringExtra("limitTime") != null) { // put variable after check whether exist empty value at limitTime   limitTime에 빈 값이 있는지 없는지 체크하고 변수 삽입.
-//                    limitTime = Long.parseLong(intent.getStringExtra("limitTime"));
-//                }
 
                 long now = System.currentTimeMillis();
-                Log.d("run: limitTime",limitTime+" :: "+now);
                 if (limitTime > now) { // if there is data, 데이터가 있으면,
-                    Log.d(TAG, "run: 여기 실행합니까??");
-//                    questionNum = intent.getStringExtra("questionNum");
-//                    question = intent.getStringExtra("question");
 
                     intent = new Intent(getApplicationContext(), MainActivity.class);
 
-                    intent.putExtra("questionNum", questionNum);
                     intent.putExtra("question", question);
 
                     startActivity(intent);
                 } else {
-                    Log.d(TAG, "run: 여기 어때요???");
                     intent = new Intent(getApplicationContext(), NoQuestionsActivity.class);
+
+                    intent.putExtra("token", token);
+
                     startActivity(intent);
                 }
                 finish();
@@ -163,14 +173,13 @@ public class IntroActivity extends Activity {
     // 저장된 값(valid)을 백그라운드에서 불러오기 위해 같은 네임파일을 찾음.
     void TossData(){
         SharedPreferences sharedPreferences = getSharedPreferences("backgroundData", MODE_PRIVATE);
+
         limitTime = Long.parseLong(sharedPreferences.getString("limitTime", "0"));
-        Log.d(TAG, "TossData: ");
+
         SharedPreferences.Editor editor = sharedPreferences.edit(); // 설문조사를 끝나고 다시 들어갈 수 있는 것을 방지하기 위해 제한시간 초기화
         editor.putString("limitTime",String.valueOf(limitTime));
 
-        questionNum = sharedPreferences.getString("questionNum", "");
         question = sharedPreferences.getString("question", "");
-//        questionNum = "a@"+questionNum;
     }
     // END Get DataFromBackground
 }

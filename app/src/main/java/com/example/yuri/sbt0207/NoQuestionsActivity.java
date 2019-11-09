@@ -9,14 +9,18 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 public class NoQuestionsActivity extends AppCompatActivity implements Runnable{
 
-    private final String BROADCAST_MESSAGE = "sbt.noQuestions"; // address of broadcast 브로드캐스트 주소
-    private BroadcastReceiver mReceiver = null;
-    private long limitTime;
-    private String questionNum;
-    private String question;
+    final String BROADCAST_MESSAGE = "sbt.noQuestions"; // address of broadcast 브로드캐스트 주소
+
+    BroadcastReceiver mReceiver = null;
+
+    long limitTime;
+
+    String question;
+    String token;
 
     @Override
     protected void onStop() {
@@ -50,8 +54,25 @@ public class NoQuestionsActivity extends AppCompatActivity implements Runnable{
 
         //최종 커밋
         editor.commit();
-        Log.d( "NoQuestionActivity: ","실행 중");
+
+
+
+        Intent intent = getIntent();
+
+        token = intent.getStringExtra("token");
+
+
+
+        TextView tokenView = (TextView)findViewById(R.id.token);
+
+        tokenView.setText(token);
     }
+
+
+
+
+
+
 
     NoQuestionsActivity that = this;
     /** register broadcast automatically in code **/
@@ -78,7 +99,6 @@ public class NoQuestionsActivity extends AppCompatActivity implements Runnable{
 
                 if(intent.getAction().equals(BROADCAST_MESSAGE)){ // if it is correct address of this class with address to sender, start this method 송신자가 보낸 주소와 이 클래스의 주소가 일치하면 함수 실행
                     limitTime = Long.parseLong(intent.getStringExtra("limitTime"));
-                    questionNum = intent.getStringExtra("questionNum");
                     question = intent.getStringExtra("question");
                     (new Thread(that)).start(); // declaring that. objects are above of registerReceiver. that is same with NoQuestionsActivity.this
                     // that선언 registerReceiver 위에 객체 있음. that은 NoQuestionsActivity.this 와 같음.
@@ -88,7 +108,14 @@ public class NoQuestionsActivity extends AppCompatActivity implements Runnable{
 
         this.registerReceiver(this.mReceiver, theFilter);
 
-    }
+    } // End RegisterReceiver
+
+
+
+
+
+
+
 
     /** end broadcast automatically in code **/
     /** 동적으로(코드상으로) 브로드 캐스트를 종료한다. **/
@@ -98,7 +125,13 @@ public class NoQuestionsActivity extends AppCompatActivity implements Runnable{
             mReceiver = null;
         }
 
-    }
+    } // End UnregisterReceiver
+
+
+
+
+
+
 
     @Override
     public void run() {
@@ -110,7 +143,6 @@ public class NoQuestionsActivity extends AppCompatActivity implements Runnable{
 
             intent = new Intent(getApplicationContext(), MainActivity.class);
 
-            intent.putExtra("questionNum",questionNum);
             intent.putExtra("question",question);
 
             startActivity(intent);
@@ -119,5 +151,8 @@ public class NoQuestionsActivity extends AppCompatActivity implements Runnable{
         }
         finish();
     }
+
+
+
 
 }

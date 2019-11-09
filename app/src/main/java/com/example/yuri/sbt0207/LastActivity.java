@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 public class LastActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.last_activity);
+        setContentView(R.layout.activity_last);
 
         SavingData();
 

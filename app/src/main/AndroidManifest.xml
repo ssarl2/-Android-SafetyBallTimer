@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.yuri.sbt0207">
+    package="com.hyunbin.yuri.sbt0207">
     <uses-permission android:name="android.permission.VIBRATE"></uses-permission>
 
     <application
@@ -10,19 +10,19 @@
         android:roundIcon="@drawable/iconfor"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"/>
-        <activity android:name=".NoQuestionsActivity" />
-        <activity android:name=".FeedbackActivity" />
-        <activity android:name=".IntroActivity">
+        <activity android:name="com.hyunbin.yuri.sbt0207.MainActivity"/>
+        <activity android:name="com.hyunbin.yuri.sbt0207.NoQuestionsActivity" />
+        <activity android:name="com.hyunbin.yuri.sbt0207.FeedbackActivity" />
+        <activity android:name="com.hyunbin.yuri.sbt0207.IntroActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LastActivity" />
+        <activity android:name="com.hyunbin.yuri.sbt0207.LastActivity" />
 
-        <service android:name=".Service.MyFirebaseMessagingService">
+        <service android:name="com.hyunbin.yuri.sbt0207.Service.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

@@ -1,4 +1,4 @@
-package com.example.yuri.sbt0207;
+package com.hyunbin.yuri.sbt0207;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;

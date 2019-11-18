@@ -65,10 +65,10 @@
                 android:textSize="20dp" />
 
             <Button
-                android:id="@+id/Notting"
+                android:id="@+id/Nothing"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Notting"
+                android:text="Nothing"
                 android:textSize="20dp" />
 
 

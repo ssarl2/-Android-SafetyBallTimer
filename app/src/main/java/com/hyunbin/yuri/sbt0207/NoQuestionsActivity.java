@@ -1,4 +1,4 @@
-package com.example.yuri.sbt0207;
+package com.hyunbin.yuri.sbt0207;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 
 public class NoQuestionsActivity extends AppCompatActivity implements Runnable{

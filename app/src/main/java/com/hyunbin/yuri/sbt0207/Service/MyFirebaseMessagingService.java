@@ -1,4 +1,4 @@
-package com.example.yuri.sbt0207.Service;
+package com.hyunbin.yuri.sbt0207.Service;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -13,9 +13,9 @@ import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.example.yuri.sbt0207.IntroActivity;
-import com.example.yuri.sbt0207.MainActivity;
-import com.example.yuri.sbt0207.R;
+import com.hyunbin.yuri.sbt0207.IntroActivity;
+import com.hyunbin.yuri.sbt0207.MainActivity;
+import com.hyunbin.yuri.sbt0207.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 

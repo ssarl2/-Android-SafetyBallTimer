@@ -1,4 +1,4 @@
-package com.example.yuri.sbt0207.Object;
+package com.hyunbin.yuri.sbt0207.Object;
 
 import java.io.Serializable;
 

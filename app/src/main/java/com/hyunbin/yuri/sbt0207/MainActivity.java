@@ -1,4 +1,4 @@
-package com.example.yuri.sbt0207;
+package com.hyunbin.yuri.sbt0207;
 
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -12,8 +12,8 @@ import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.example.yuri.sbt0207.Object.Analyze;
-import com.example.yuri.sbt0207.Object.EachValue;
+import com.hyunbin.yuri.sbt0207.Object.Analyze;
+import com.hyunbin.yuri.sbt0207.Object.EachValue;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

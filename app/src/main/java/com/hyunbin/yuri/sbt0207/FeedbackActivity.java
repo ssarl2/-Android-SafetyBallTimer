@@ -1,4 +1,4 @@
-package com.example.yuri.sbt0207;
+package com.hyunbin.yuri.sbt0207;
 
 import android.content.Intent;
 import android.support.v4.app.ActivityCompat;
@@ -19,7 +19,7 @@ public class FeedbackActivity extends AppCompatActivity {
     String feedback;
 
     Button sendBtn;
-    Button noting;
+    Button nothing;
 
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     DatabaseReference databaseReference = firebaseDatabase.getReference();
@@ -44,7 +44,7 @@ public class FeedbackActivity extends AppCompatActivity {
 
         editText = (EditText)findViewById(R.id.editText);
         sendBtn = (Button)findViewById(R.id.sendBtn);
-        noting = (Button)findViewById(R.id.Notting);
+        nothing = (Button)findViewById(R.id.Nothing);
 
 
         sendBtn.setOnClickListener(new View.OnClickListener() {
@@ -64,7 +64,7 @@ public class FeedbackActivity extends AppCompatActivity {
             }
         });
         
-        noting.setOnClickListener(new View.OnClickListener() {
+        nothing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getBaseContext(),LastActivity.class);

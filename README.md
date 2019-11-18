@@ -1,3 +1,14 @@
+# 09.11.19 fixed the application
+
+### Fixed list<br>
+<ul>
+<li>It goes very well</li>
+<li>Codes are clear (varible roles, activities name, organized class files)</li>
+<li>Gradle is changed to new android studio version</li>
+</ul>
+
+---------------------------------------------------------------------------------------
+
 # 30.09.19 fixed the application
 
 ### Fixed list<br>
